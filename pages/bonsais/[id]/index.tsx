@@ -54,6 +54,8 @@ export default function Timeline() {
               <div className="card h-100 shadow-sm">
                 <Image
                   src={entry.imageUrl}
+                  width={300}
+                  height={300}
                   className="card-img-top"
                   alt="Registro"
                 />
