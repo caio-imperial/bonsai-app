@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { IncomingForm, File as FormidableFile } from 'formidable'
 import fs from 'fs'
 import path from 'path'
-import { createRegistro } from '@/lib/data'
+import { createEntry } from '@/lib/data'
 import { uploadToImgBB } from '@/lib/imgbb'
 
 // Desativa o bodyParser padrão do Next pra aceitar multipart/form-data
@@ -14,7 +14,7 @@ export const config = {
 }
 
 interface Files {
-  imagem?: FormidableFile | FormidableFile[];
+  image?: FormidableFile | FormidableFile[];
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -40,19 +40,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const bonsaiId = fields.bonsaiId?.toString() || ''
-    const nota = fields.nota?.toString() || ''
-    const data = fields.data?.toString() || new Date().toISOString()
+    const note = fields.note?.toString() || ''
+    const dateEntry = fields.dateEntry?.toString() || new Date().toISOString()
 
-    const imagem = files.imagem as File | undefined
-    if (!imagem || (Array.isArray(imagem) && imagem.length === 0)) {
+    const image = files.image as File | undefined
+    if (!image || (Array.isArray(image) && image.length === 0)) {
       return res.status(400).json({ error: 'Imagem inválida' })
     }
 
-    const fileToUpload = Array.isArray(imagem) ? imagem[0] : imagem;
+    const fileToUpload = Array.isArray(image) ? image[0] : image;
 
 const imageUrl = await uploadToImgBB(fileToUpload);
 
-    await createRegistro(bonsaiId, imageUrl, nota, data)
+    await createEntry(bonsaiId, imageUrl, note, dateEntry)
 
     return res.status(200).json({ ok: true })
   })

@@ -1,18 +1,26 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getRegistros } from '@/lib/data'
+import { deleteBonsai, getEntries } from '@/lib/data'
 import clientPromise from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const id = req.query.id as string
+  if (req.method === 'GET') {
+    const id = req.query.id as string
 
-  const client = await clientPromise
-  const db = client.db('bonsais')
-  const bonsai = await db.collection('bonsais').findOne({ _id: new ObjectId(id) })
+    const client = await clientPromise
+    const db = client.db('bonsais')
+    const bonsai = await db.collection('bonsais').findOne({ _id: new ObjectId(id) })
 
-  if (!bonsai) return res.status(404).json({ error: 'Bonsai não encontrado' })
+    if (!bonsai) return res.status(404).json({ error: 'Bonsai não encontrado' })
 
-  const registros = await getRegistros(id)
+    const entries = await getEntries(id)
 
-  res.status(200).json({ bonsai, registros })
+    res.status(200).json({ bonsai, entries })
+  } else if (req.method === 'DELETE') {
+    const id = req.query.id as string
+    await deleteBonsai(id)
+    res.status(204).end()
+  } else {
+    res.status(405).end()
+  }
 }

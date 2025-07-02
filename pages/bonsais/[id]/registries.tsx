@@ -5,21 +5,21 @@ export default function NovoRegistro() {
   const router = useRouter()
   const { id } = router.query
 
-  const [nota, setNota] = useState('')
-  const [data, setData] = useState(new Date().toISOString().slice(0, 10))
-  const [imagem, setImagem] = useState<File | null>(null)
-  const [carregando, setCarregando] = useState(false)
+  const [note, setNote] = useState('')
+  const [dateEntry, setDateEntry] = useState(new Date().toISOString().slice(0, 10))
+  const [image, setImage] = useState<File | null>(null)
+  const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!imagem || !id) return
+    if (!image || !id) return
 
-    setCarregando(true)
+    setLoading(true)
 
     const form = new FormData()
-    form.append('imagem', imagem)
-    form.append('nota', nota)
-    form.append('data', data)
+    form.append('image', image)
+    form.append('note', note)
+    form.append('dateEntry', dateEntry)
     form.append('bonsaiId', id.toString())
 
     await fetch('/api/registries', {
@@ -42,7 +42,7 @@ export default function NovoRegistro() {
             className="form-control"
             required
             accept="image/*"
-            onChange={(e) => setImagem(e.target.files?.[0] || null)}
+            onChange={(e) => setImage(e.target.files?.[0] || null)}
           />
         </div>
 
@@ -51,8 +51,8 @@ export default function NovoRegistro() {
           <textarea
             className="form-control"
             rows={3}
-            value={nota}
-            onChange={(e) => setNota(e.target.value)}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
           />
         </div>
 
@@ -61,13 +61,13 @@ export default function NovoRegistro() {
           <input
             type="date"
             className="form-control"
-            value={data}
-            onChange={(e) => setData(e.target.value)}
+            value={dateEntry}
+            onChange={(e) => setDateEntry(e.target.value)}
           />
         </div>
 
-        <button className="btn btn-primary" disabled={carregando}>
-          {carregando ? 'Salvando...' : 'Salvar registro'}
+        <button className="btn btn-primary" disabled={loading}>
+          {loading ? 'Salvando...' : 'Salvar registro'}
         </button>
       </form>
     </div>

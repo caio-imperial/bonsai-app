@@ -17,12 +17,21 @@ export default function Home() {
       .then((data) => setBonsais(data))
   }, [])
 
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
+    e.preventDefault()
+    console.log(id)
+    await fetch(`/api/bonsais/${id}`, {
+      method: 'DELETE',
+    })
+    setBonsais(bonsais.filter((bonsai) => bonsai._id !== id))
+  }
+
   return (
-    <div className="container mt-5">
+    <div className="container">
       <h1 className="mb-4">🌱 Meus Bonsais</h1>
 
-      <Link href="/bonsais/new" className="btn btn-success mb-4">
-        ➕ Novo Bonsai
+      <Link href="/bonsais/new" className="btn btn-primary mb-4">
+        Novo Bonsai
       </Link>
 
       {bonsais.length === 0 ? (
@@ -37,6 +46,12 @@ export default function Home() {
             >
               <strong>{bonsai.nome}</strong>
               {bonsai.especie && <span className="text-muted"> — {bonsai.especie}</span>}
+              <button
+                onClick={(e) => handleDelete(e, bonsai._id)}
+                className="btn btn-danger btn-sm float-end"
+              >
+                <i className="bi bi-trash" />
+              </button>
             </Link>
           ))}
         </div>

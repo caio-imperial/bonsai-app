@@ -6,51 +6,65 @@ import { ObjectId } from 'mongodb'
 export async function getBonsais() {
   const client = await clientPromise
   const db = client.db('bonsais')
-  const bonsais = await db.collection('bonsais').find().sort({ criadoEm: -1 }).toArray()
+  const bonsais = await db.collection('bonsais').find().sort({ createdAt: -1 }).toArray()
   return bonsais
 }
 
 // 🪴 Criar um novo bonsai
-export async function createBonsai(nome: string, especie?: string) {
+export async function createBonsai(name: string, species?: string) {
   const client = await clientPromise
   const db = client.db('bonsais')
-  const novo = {
-    nome,
-    especie: especie || '',
-    criadoEm: new Date(),
+  const newBonsai = {
+    name,
+    species: species || '',
+    createdAt: new Date(),
   }
-  const result = await db.collection('bonsais').insertOne(novo)
+  const result = await db.collection('bonsais').insertOne(newBonsai)
   return result.insertedId
 }
 
 // 📸 Buscar registros de um bonsai
-export async function getRegistros(bonsaiId: string) {
+export async function getEntries(bonsaiId: string) {
   const client = await clientPromise
   const db = client.db('bonsais')
-  const registros = await db
-    .collection('registries')
+  const entries = await db
+    .collection('entries')
     .find({ bonsaiId: new ObjectId(bonsaiId) })
-    .sort({ data: -1 })
+    .sort({ createdAt: -1 })
     .toArray()
-  return registros
+  return entries
 }
 
 // 📸 Criar novo registro com imagem
-export async function createRegistro(
+export async function createEntry(
   bonsaiId: string,
-  imagemUrl: string,
-  nota: string,
-  data: string
+  imageUrl: string,
+  notes: string,
+  dateEntry: string
 ) {
   const client = await clientPromise
   const db = client.db('bonsais')
   const novo = {
     bonsaiId: new ObjectId(bonsaiId),
-    imagemUrl,
-    nota,
-    data: new Date(data),
-    criadoEm: new Date(),
+    imageUrl,
+    notes,
+    dateEntry: new Date(dateEntry),
+    createdAt: new Date(),
   }
   const result = await db.collection('registries').insertOne(novo)
   return result.insertedId
+}
+
+export async function deleteBonsai(id: string): Promise<void> {
+  const client = await clientPromise;
+  const db = client.db('bonsais');
+  const bonsai = await db.collection('bonsais').findOne({ _id: new ObjectId(id) })
+  if (!bonsai) {
+    throw new Error('Bonsai não encontrado')
+  }
+  const entries = await getEntries(id)
+  for (const entry of entries) {
+    await db.collection('entries').deleteOne({ _id: new ObjectId(entry._id) })
+  }
+  await db.collection('bonsais').deleteOne({ _id: new ObjectId(id) });
 }

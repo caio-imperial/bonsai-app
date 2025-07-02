@@ -22,8 +22,8 @@ export default function NovoBonsai() {
   }
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">➕ Cadastrar novo bonsai</h1>
+    <div className="mt-5">
+      <h1 className="mb-4">Cadastrar novo bonsai</h1>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
