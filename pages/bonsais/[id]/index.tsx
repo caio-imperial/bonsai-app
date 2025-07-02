@@ -48,18 +48,18 @@ export default function LinhaDoTempo() {
         <p>Nenhum registro ainda 😢</p>
       ) : (
         <div className="row">
-          {registros.map((r) => (
-            <div className="col-md-4 mb-4" key={r._id}>
+          {registros.map((registry) => (
+            <div className="col-md-4 mb-4" key={registry._id}>
               <div className="card h-100 shadow-sm">
                 <img
-                  src={`/uploads/${r.imagemUrl}`}
+                  src={registry.imagemUrl}
                   className="card-img-top"
                   alt="Registro"
                 />
                 <div className="card-body">
-                  <p className="card-text">{r.nota}</p>
+                  <p className="card-text">{registry.nota}</p>
                   <p className="text-muted small mb-0">
-                    {new Date(r.data).toLocaleDateString('pt-BR')}
+                    {new Date(registry.data).toLocaleDateString('pt-BR')}
                   </p>
                 </div>
               </div>
