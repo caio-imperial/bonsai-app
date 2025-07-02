@@ -28,7 +28,7 @@ export async function getRegistros(bonsaiId: string) {
   const client = await clientPromise
   const db = client.db('bonsais')
   const registros = await db
-    .collection('registros')
+    .collection('registries')
     .find({ bonsaiId: new ObjectId(bonsaiId) })
     .sort({ data: -1 })
     .toArray()
@@ -51,6 +51,6 @@ export async function createRegistro(
     data: new Date(data),
     criadoEm: new Date(),
   }
-  const result = await db.collection('registros').insertOne(novo)
+  const result = await db.collection('registries').insertOne(novo)
   return result.insertedId
 }

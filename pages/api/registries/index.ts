@@ -4,6 +4,7 @@ import { IncomingForm, File as FormidableFile } from 'formidable'
 import fs from 'fs'
 import path from 'path'
 import { createRegistro } from '@/lib/data'
+import { uploadToImgBB } from '@/lib/imgbb'
 
 // Desativa o bodyParser padrão do Next pra aceitar multipart/form-data
 export const config = {
@@ -42,13 +43,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const nota = fields.nota?.toString() || ''
     const data = fields.data?.toString() || new Date().toISOString()
 
-    const imagem = files.imagem
+    const imagem = files.imagem as File | undefined
     if (!imagem || (Array.isArray(imagem) && imagem.length === 0)) {
       return res.status(400).json({ error: 'Imagem inválida' })
     }
 
-    const filename = path.basename(Array.isArray(imagem) ? imagem[0].filepath : imagem.filepath)
-    const imageUrl = filename
+    const fileToUpload = Array.isArray(imagem) ? imagem[0] : imagem;
+
+const imageUrl = await uploadToImgBB(fileToUpload);
 
     await createRegistro(bonsaiId, imageUrl, nota, data)
 
