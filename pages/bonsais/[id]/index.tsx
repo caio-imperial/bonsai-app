@@ -2,12 +2,13 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Image from 'next/image'
 
-type Registro = {
+type Entry = {
   _id: string
-  imagemUrl: string
-  nota: string
-  data: string
+  imageUrl: string
+  note: string
+  dateEntry: string
 }
 
 type Bonsai = {
@@ -15,12 +16,12 @@ type Bonsai = {
   especie: string
 }
 
-export default function LinhaDoTempo() {
+export default function Timeline() {
   const router = useRouter()
   const { id } = router.query
 
   const [bonsai, setBonsai] = useState<Bonsai | null>(null)
-  const [registros, setRegistros] = useState<Registro[]>([])
+  const [entries, setEntries] = useState<Entry[]>([])
 
   useEffect(() => {
     if (!id) return
@@ -29,7 +30,7 @@ export default function LinhaDoTempo() {
       .then((res) => res.json())
       .then((data) => {
         setBonsai(data.bonsai)
-        setRegistros(data.registros)
+        setEntries(data.entries)
       })
   }, [id])
 
@@ -40,26 +41,26 @@ export default function LinhaDoTempo() {
       <h1 className="mb-1">{bonsai.nome}</h1>
       {bonsai.especie && <p className="text-muted">{bonsai.especie}</p>}
 
-      <Link href={`/bonsais/${id}/registries`} className="btn btn-success my-4">
-        ➕ Adicionar Registro
+      <Link href={`/bonsais/${id}/entries`} className="btn btn-primary my-4">
+        Adicionar registro
       </Link>
 
-      {registros.length === 0 ? (
+      {entries.length === 0 ? (
         <p>Nenhum registro ainda 😢</p>
       ) : (
         <div className="row">
-          {registros.map((registry) => (
-            <div className="col-md-4 mb-4" key={registry._id}>
+          {entries.map((entry) => (
+            <div className="col-md-4 mb-4" key={entry._id}>
               <div className="card h-100 shadow-sm">
-                <img
-                  src={registry.imagemUrl}
+                <Image
+                  src={entry.imageUrl}
                   className="card-img-top"
                   alt="Registro"
                 />
                 <div className="card-body">
-                  <p className="card-text">{registry.nota}</p>
+                  <p className="card-text">{entry.note}</p>
                   <p className="text-muted small mb-0">
-                    {new Date(registry.data).toLocaleDateString('pt-BR')}
+                    {new Date(entry.dateEntry).toLocaleDateString('pt-BR')}
                   </p>
                 </div>
               </div>

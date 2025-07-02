@@ -1,4 +1,3 @@
-// pages/api/novo-registro.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { IncomingForm, File as FormidableFile } from 'formidable'
 import fs from 'fs'

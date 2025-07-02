@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-export default function NovoRegistro() {
+export default function NewEntry() {
   const router = useRouter()
   const { id } = router.query
 
@@ -22,7 +22,7 @@ export default function NovoRegistro() {
     form.append('dateEntry', dateEntry)
     form.append('bonsaiId', id.toString())
 
-    await fetch('/api/registries', {
+    await fetch('/api/entries', {
       method: 'POST',
       body: form,
     })

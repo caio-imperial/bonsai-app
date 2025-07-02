@@ -44,14 +44,14 @@ export async function createEntry(
 ) {
   const client = await clientPromise
   const db = client.db('bonsais')
-  const novo = {
+  const newEntry = {
     bonsaiId: new ObjectId(bonsaiId),
     imageUrl,
     notes,
     dateEntry: new Date(dateEntry),
     createdAt: new Date(),
   }
-  const result = await db.collection('registries').insertOne(novo)
+  const result = await db.collection('entries').insertOne(newEntry)
   return result.insertedId
 }
 

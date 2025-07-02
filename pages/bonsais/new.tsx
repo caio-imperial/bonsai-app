@@ -2,20 +2,20 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
-export default function NovoBonsai() {
-  const [nome, setNome] = useState('')
-  const [especie, setEspecie] = useState('')
-  const [carregando, setCarregando] = useState(false)
+export default function NewBonsai() {
+  const [name, setName] = useState('')
+  const [species, setSpecies] = useState('')
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setCarregando(true)
+    setLoading(true)
 
     await fetch('/api/bonsais', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, especie }),
+      body: JSON.stringify({ name, species }),
     })
 
     router.push('/')
@@ -32,8 +32,8 @@ export default function NovoBonsai() {
             type="text"
             className="form-control"
             required
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="Ex: Acer Palmatum"
           />
         </div>
@@ -43,14 +43,14 @@ export default function NovoBonsai() {
           <input
             type="text"
             className="form-control"
-            value={especie}
-            onChange={(e) => setEspecie(e.target.value)}
+            value={species}
+            onChange={(e) => setSpecies(e.target.value)}
             placeholder="Ex: Maple Japonês"
           />
         </div>
 
-        <button className="btn btn-primary" disabled={carregando}>
-          {carregando ? 'Salvando...' : 'Salvar'}
+        <button className="btn btn-primary" disabled={loading}>
+          {loading ? 'Salvando...' : 'Salvar'}
         </button>
       </form>
     </div>
