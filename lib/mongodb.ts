@@ -2,7 +2,6 @@
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI as string;
-console.log(uri);
 if (!uri) throw new Error("❌ MONGODB_URI não configurada no .env");
 
 let client: MongoClient;
