@@ -10,6 +10,11 @@ export type Entry = {
 }
 
 const Timeline = ({ entries = mockEntries }: { entries?: Entry[] }) => {
+    function convertDateToDateEntry(date: string) {
+        const dateObj = new Date(date);
+        return dateObj.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
     return (
         <div className={styles.mainTimeline}>
             {entries.map((event, index) => (
@@ -18,9 +23,9 @@ const Timeline = ({ entries = mockEntries }: { entries?: Entry[] }) => {
                         <i className="bi bi-tree-fill"></i>
                     </div>
                     <div className={styles.timelineContent}>
-                        <h5>{event.dateEntry}</h5>
+                        <h5>{convertDateToDateEntry(event.dateEntry)}</h5>
                         <p>{event.notes}</p>
-                        <img src={event.imageUrl} alt={event.note} />
+                        <img src={event.imageUrl} alt={event.notes} />
                     </div>
                 </div>
             ))}
