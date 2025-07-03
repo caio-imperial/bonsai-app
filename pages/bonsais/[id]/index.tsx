@@ -2,12 +2,13 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Image from 'next/image'
+import Timeline from '@/components/Timeline'
+// import Image from 'next/image'
 
 type Entry = {
   _id: string
   imageUrl: string
-  note: string
+  notes: string
   dateEntry: string
 }
 
@@ -16,7 +17,7 @@ type Bonsai = {
   especie: string
 }
 
-export default function Timeline() {
+export default function TimelinePage() {
   const router = useRouter()
   const { id } = router.query
 
@@ -48,27 +49,28 @@ export default function Timeline() {
       {entries.length === 0 ? (
         <p>Nenhum registro ainda 😢</p>
       ) : (
-        <div className="row">
-          {entries.map((entry) => (
-            <div className="col-md-4 mb-4" key={entry._id}>
-              <div className="card h-100 shadow-sm">
-                <Image
-                  src={entry.imageUrl}
-                  width={300}
-                  height={300}
-                  className="card-img-top"
-                  alt="Registro"
-                />
-                <div className="card-body">
-                  <p className="card-text">{entry.note}</p>
-                  <p className="text-muted small mb-0">
-                    {new Date(entry.dateEntry).toLocaleDateString('pt-BR')}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Timeline entries={entries} />
+        // <div className="row">
+        //   {entries.map((entry) => (
+        //     <div className="col-md-4 mb-4" key={entry._id}>
+        //       <div className="card h-100 shadow-sm">
+        //         <Image
+        //           src={entry.imageUrl}
+        //           width={300}
+        //           height={300}
+        //           className="card-img-top"
+        //           alt="Registro"
+        //         />
+        //         <div className="card-body">
+        //           <p className="card-text">{entry.note}</p>
+        //           <p className="text-muted small mb-0">
+        //             {new Date(entry.dateEntry).toLocaleDateString('pt-BR')}
+        //           </p>
+        //         </div>
+        //       </div>
+        //     </div>
+        //   ))}
+        // </div>
       )}
     </div>
   )
