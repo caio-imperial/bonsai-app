@@ -1,33 +1,35 @@
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
+  const pathname = usePathname();
   return (
-    <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 bg-dark">
+    <div className="d-flex flex-column align-items-center px-3 pt-2 text-white min-vh-100 bg-dark">
       <Link
-        href="#"
+        href="/"
         className="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
       >
         <span className="fs-5 d-none d-sm-inline">Bonsai App</span>
       </Link>
       <ul
-        className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+        className="nav nav-pills flex-column mb-auto align-items-start w-100 d-grid gap-2"
         id="menu"
       >
-        <li className="nav-item">
-          <Link href="/" className="nav-link align-middle px-0">
-            <i className="fs-4 bi-house"></i>{" "}
-            <span className="ms-1 d-none d-sm-inline">Meus bonsais</span>
+        <li className="nav-item flex-sm-fill text-sm-center ">
+          <Link href="/" className={`nav-link link-light align-middle d-flex justify-content-center ${pathname === '/' ? 'active' : ''}`}>
+            <i className="fs-4 bi-house"></i>
+            <span className="ms-1 d-none d-sm-inline align-self-center">Meus bonsais</span>
           </Link>
         </li>
-        <li className="nav-item">
-          <Link href="/bonsais/new" className="nav-link align-middle px-0">
+        <li className="nav-item flex-sm-fill text-sm-center">
+          <Link href="/bonsais/new" className={`nav-link link-light align-middle d-flex justify-content-center ${pathname === '/bonsais/new' ? 'active' : ''}`}>
             <i className="fs-4 bi-plus"></i>{" "}
-            <span className="ms-1 d-none d-sm-inline">Novo bonsai</span>
+            <span className="ms-1 d-none d-sm-inline align-self-center">Novo bonsai</span>
           </Link>
         </li>
       </ul>
       <hr />
-      <div className="dropdown pb-4">
+      <div className="dropdown pb-4 me-auto">
         <Link
           href="#"
           className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
