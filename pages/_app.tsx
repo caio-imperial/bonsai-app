@@ -4,6 +4,7 @@ import Head from "next/head";
 import { AppProps } from 'next/app';
 import Layout from "@/components/Layout"; 
 import { useEffect } from 'react';
+import { ConfirmProvider } from '@/context/ConfirmContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -12,12 +13,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <Layout>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <Component {...pageProps} />
-    </Layout>
+    <ConfirmProvider>
+      <Layout>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <Component {...pageProps} />
+      </Layout>
+    </ConfirmProvider>
   );
 }
 
