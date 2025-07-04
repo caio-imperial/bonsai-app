@@ -5,7 +5,7 @@ import { createBonsai, getBonsais } from '@/lib/data'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { name, species } = req.body
-    const id = await createBonsai(name, species)
+    const id = await createBonsai({ name, species })
     res.status(200).json({ id })
   } else if (req.method === 'GET') {
     const bonsais = await getBonsais()
