@@ -1,30 +1,43 @@
 // pages/index.tsx
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useConfirm } from "@/context/ConfirmContext";
 
 type Bonsai = {
-  _id: string
-  name: string
-  species?: string
-}
+  _id: string;
+  name: string;
+  species?: string;
+};
 
 export default function Home() {
-  const [bonsais, setBonsais] = useState<Bonsai[]>([])
+  const [bonsais, setBonsais] = useState<Bonsai[]>([]);
+  const { showConfirm } = useConfirm();
 
   useEffect(() => {
-    fetch('/api/bonsais')
+    fetch("/api/bonsais")
       .then((res) => res.json())
-      .then((data) => setBonsais(data))
-  }, [])
+      .then((data) => setBonsais(data));
+  }, []);
 
-  const handleDelete = async (e: React.MouseEvent, id: string) => {
-    e.preventDefault()
-    console.log(id)
-    await fetch(`/api/bonsais/${id}`, {
-      method: 'DELETE',
-    })
-    setBonsais(bonsais.filter((bonsai) => bonsai._id !== id))
-  }
+  const handleDelete = async (
+    e: React.MouseEvent,
+    id: string,
+    bonsaiName: string
+  ) => {
+    e.preventDefault();
+    showConfirm({
+      title: "Excluir bonsai?",
+      message: `Você tem certeza que deseja excluir "${bonsaiName}"?`,
+      confirmText: "Sim, excluir",
+      cancelText: "Cancelar",
+      onConfirm: () => {
+        fetch(`/api/bonsais/${id}`, {
+          method: "DELETE",
+        });
+        setBonsais(bonsais.filter((bonsai) => bonsai._id !== id));
+      },
+    });
+  };
 
   return (
     <div className="container">
@@ -40,13 +53,15 @@ export default function Home() {
       ) : (
         <ul className="list-group">
           {bonsais.map((bonsai) => (
-            <li key={bonsai._id} className="d-flex justify-content-between align-items-center list-group-item ">
-              <Link
-                href={`/bonsais/${bonsai._id}`}
-                className="link-dark"
-              >
+            <li
+              key={bonsai._id}
+              className="d-flex justify-content-between align-items-center list-group-item "
+            >
+              <Link href={`/bonsais/${bonsai._id}`} className="link-dark">
                 <strong>{bonsai.name}</strong>
-                {bonsai.species && <span className="text-muted"> — {bonsai.species}</span>}
+                {bonsai.species && (
+                  <span className="text-muted"> — {bonsai.species}</span>
+                )}
               </Link>
               <div className="btn-group me-2">
                 <Link
@@ -56,7 +71,7 @@ export default function Home() {
                   <i className="bi bi-pencil" />
                 </Link>
                 <button
-                  onClick={(e) => handleDelete(e, bonsai._id)}
+                  onClick={(e) => handleDelete(e, bonsai._id, bonsai.name)}
                   className="btn btn-danger btn-sm"
                 >
                   <i className="bi bi-trash" />
@@ -67,5 +82,5 @@ export default function Home() {
         </ul>
       )}
     </div>
-  )
+  );
 }
