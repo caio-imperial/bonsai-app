@@ -33,7 +33,6 @@ export default function NewEntry() {
 
   return (
     <div className="container mt-5">
-      {dateEntry}
       <h1 className="mb-4">📸 Novo registro</h1>
 
       <form onSubmit={handleSubmit} encType="multipart/form-data">

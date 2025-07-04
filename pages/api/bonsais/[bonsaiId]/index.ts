@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { deleteBonsai, getEntries } from '@/lib/data'
+import { deleteBonsai, getEntries, updateBonsai } from '@/lib/data'
 import clientPromise from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
 
@@ -16,6 +16,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const entries = await getEntries(id)
 
     res.status(200).json({ bonsai, entries })
+  }
+  else if (req.method === 'PATCH') {
+    const { bonsaiId } = req.query
+    const { name, species } = req.body
+    await updateBonsai(bonsaiId as string, { name, species })
+    res.status(204).end()
   } else if (req.method === 'DELETE') {
     const id = req.query.bonsaiId as string
     await deleteBonsai(id)

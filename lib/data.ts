@@ -50,14 +50,12 @@ export async function getEntries(bonsaiId: string) {
 }
 
 // 📸 Criar novo registro com imagem
-export async function createEntry(
-  {
-    bonsaiId,
-    imageUrl,
-    notes,
-    dateEntry,
-  }: Omit<Entry, "_id" | "createdAt">
-) {
+export async function createEntry({
+  bonsaiId,
+  imageUrl,
+  notes,
+  dateEntry,
+}: Omit<Entry, "_id" | "createdAt">) {
   const client = await clientPromise;
   const db = client.db("bonsais");
   const newEntry = {
@@ -71,15 +69,25 @@ export async function createEntry(
   return result.insertedId;
 }
 
-// 📸 Atualizar um registro com imagem
-export async function updateEntry(
-  {
-    _id,
-    imageUrl,
-    notes,
-    dateEntry,
-  }: Partial<Entry>
+// 📸 Atualizar um bonsai
+export async function updateBonsai(
+  bonsaiId: string,
+  { name, species }: Partial<Bonsai>
 ) {
+  const client = await clientPromise;
+  const db = client.db("bonsais");
+  await db
+    .collection("bonsais")
+    .updateOne({ _id: new ObjectId(bonsaiId) }, { $set: { name, species } });
+}
+
+// 📸 Atualizar um registro com imagem
+export async function updateEntry({
+  _id,
+  imageUrl,
+  notes,
+  dateEntry,
+}: Partial<Entry>) {
   if (!_id) {
     throw new Error("ID do registro não informado");
   }
@@ -99,7 +107,9 @@ export async function updateEntry(
     ...(notes && { notes }),
     ...(dateEntry && { dateEntry: new Date(dateEntry) }),
   };
-  await db.collection("entries").updateOne({ _id: new ObjectId(_id) }, { $set: updateData });
+  await db
+    .collection("entries")
+    .updateOne({ _id: new ObjectId(_id) }, { $set: updateData });
 }
 
 // 📸 Deletar um registro com imagem
