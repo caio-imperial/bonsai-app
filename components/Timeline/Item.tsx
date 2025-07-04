@@ -58,7 +58,7 @@ export const TimelineItem = ({
           <div className="col-md-8">
             <div className="card-body">
               <h5 className="card-title">{entry.title}</h5>
-              <p className="card-text">{entry.notes}</p>
+              <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{entry.notes}</div>
             </div>
           </div>
         </div>
