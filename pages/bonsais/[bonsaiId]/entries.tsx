@@ -3,9 +3,9 @@ import { useState } from "react";
 
 export default function NewEntry() {
   const router = useRouter();
-  const { id } = router.query;
+  const { bonsaiId } = router.query;
 
-  const [note, setNote] = useState("");
+  const [notes, setNotes] = useState("");
   const [dateEntry, setDateEntry] = useState(
     new Date().toISOString().slice(0, 10)
   );
@@ -14,21 +14,21 @@ export default function NewEntry() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!image || !id) return;
+    if (!image || !bonsaiId) return;
 
     setLoading(true);
 
     const form = new FormData();
     form.append("image", image);
-    form.append("note", note);
+    form.append("notes", notes);
     form.append("dateEntry", dateEntry + "T12:00:00.000Z");
 
-    await fetch(`/api/bonsais/${id}/entries`, {
+    await fetch(`/api/bonsais/${bonsaiId}/entries`, {
       method: "POST",
       body: form,
     });
 
-    router.push(`/bonsais/${id}`);
+    router.push(`/bonsais/${bonsaiId}`);
   }
 
   return (
@@ -53,8 +53,8 @@ export default function NewEntry() {
           <textarea
             className="form-control"
             rows={3}
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
           />
         </div>
 

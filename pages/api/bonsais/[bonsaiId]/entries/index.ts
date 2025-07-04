@@ -31,7 +31,7 @@ export default async function handler(
       }
 
       const bonsaiId = req.query.bonsaiId?.toString() || "";
-      const note = fields.note?.toString() || "";
+      const notes = fields.notes?.toString() || "";
       const dateEntry =
         fields.dateEntry?.toString() || new Date().toISOString();
 
@@ -44,7 +44,12 @@ export default async function handler(
 
       const imageUrl = await uploadToImgBB(fileToUpload);
 
-      await createEntry(bonsaiId, imageUrl, note, dateEntry);
+      await createEntry({
+        bonsaiId,
+        imageUrl,
+        notes,
+        dateEntry,
+      });
 
       return res.status(200).json({ ok: true });
     });

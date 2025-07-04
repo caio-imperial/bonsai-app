@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { IncomingForm, File as FormidableFile } from "formidable";
-import { updateEntry } from "@/lib/data";
+import { deleteEntry, updateEntry } from "@/lib/data";
 import { uploadToImgBB } from "@/lib/imgbb";
 
 // Desativa o bodyParser padrão do Next pra aceitar multipart/form-data
@@ -21,7 +21,9 @@ export default async function handler(
   if (req.method === "GET") {
     return;
   } else if (req.method === "DELETE") {
-    return;
+    const entryId = req.query.entryId?.toString() || "";
+    await deleteEntry(entryId);
+    return res.status(204).end();
   }  else if (req.method === "PATCH") {
     const form = new IncomingForm({
       keepExtensions: true,
@@ -35,7 +37,7 @@ export default async function handler(
       }
     
       const entryId = req.query.id?.toString() || "";
-      const note = fields.note?.toString() || "";
+      const notes = fields.notes?.toString() || "";
       const dateEntry = fields.dateEntry?.toString() || new Date().toISOString();
     
       const image = files.image as File | undefined;
@@ -47,7 +49,12 @@ export default async function handler(
       }
     
       // Chama a função de atualização, passando os campos opcionais
-      await updateEntry(entryId, imageUrl, note, dateEntry);
+      await updateEntry({
+        _id: entryId,
+        imageUrl,
+        notes: notes,
+        dateEntry,
+      });
     
       return res.status(200).json({ ok: true });
     });
