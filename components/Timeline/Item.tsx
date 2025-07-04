@@ -1,6 +1,26 @@
 import { Entry } from "@/types";
 import Link from "next/link";
 
+
+function ActionMenu({ entry, handleDelete }: { entry: Entry, handleDelete: (id: string) => void }) {
+  return (
+    <div className="btn-group small text-muted btn-group-sm mb-1">
+        <Link
+          href={`/bonsais/${entry.bonsaiId}/entries/${entry._id}/edit`}
+          className="btn btn-primary"
+        >
+          <i className="bi bi-pencil"></i>
+        </Link>
+        <button
+          onClick={() => handleDelete(entry._id)}
+          className="btn btn-danger"
+        >
+          <i className="bi bi-trash"></i>
+        </button>
+    </div>
+  )
+}
+
 export const TimelineItem = ({
   entry,
   handleDelete,
@@ -17,41 +37,16 @@ export const TimelineItem = ({
   }
 
   return (
-    <>
-      <p className="ms-3 mb-1">
-        <small className="text-body-secondary fw-bold">
-          {formatDateForDisplay(entry.dateEntry)}
-        </small>
-      </p>
-      <div className="card mb-3 position-relative">
-        <div className="position-absolute bottom-0 end-0">
-          <button
-            type="button"
-            className="btn btn-link btn-sm"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i className="bi bi-three-dots-vertical text-muted"></i>
-          </button>
-          <ul className="dropdown-menu dropdown-menu-end">
-            <li>
-              <Link
-                href={`/bonsais/${entry.bonsaiId}/entries/${entry._id}/edit`}
-                className="dropdown-item"
-              >
-                Edit
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={() => handleDelete(entry._id)}
-                className="dropdown-item"
-              >
-                Delete
-              </button>
-            </li>
-          </ul>
-        </div>
+    <> 
+      <div className="d-flex align-items-center justify-content-between">
+        <p className="mb-1">
+          <small className="text-body-secondary fw-bold">
+            {formatDateForDisplay(entry.dateEntry)}
+          </small>
+        </p>
+        <ActionMenu entry={entry} handleDelete={handleDelete} />
+      </div>
+      <div className="card mb-3">
         <div className="row g-0">
           <div className="col-md-4">
             <img
