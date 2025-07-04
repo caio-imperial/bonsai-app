@@ -25,6 +25,17 @@ export default function TimelinePage() {
 
   if (!bonsai) return <p className="container mt-5">Carregando bonsai... 🌿</p>
 
+  function handleDelete(entryId: string) {
+    fetch(`/api/bonsais/${bonsaiId}/entries/${entryId}`, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (res.ok) {
+          setEntries(entries.filter((entry) => entry._id !== entryId))
+        }
+      })
+  }
+
   return (
     <div className="container mt-5">
       <h1 className="mb-1">{bonsai.name}</h1>
@@ -37,7 +48,7 @@ export default function TimelinePage() {
       {entries.length === 0 ? (
         <p>Nenhum registro ainda 😢</p>
       ) : (
-        <Timeline entries={entries} />
+        <Timeline entries={entries} handleDelete={handleDelete} />
       )}
     </div>
   )

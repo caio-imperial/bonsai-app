@@ -4,7 +4,7 @@ import { mockEntries } from "./mockData";
 import { TimelineItem } from "./Item";
 import { Entry } from "@/types";
 
-const Timeline = ({ entries = mockEntries }: { entries?: Entry[] }) => {
+const Timeline = ({ entries = mockEntries, handleDelete }: { entries?: Entry[], handleDelete: (id: string) => void }) => {
   return (
     <div className={styles.mainTimeline}>
       {entries.map((event, index) => (
@@ -13,7 +13,7 @@ const Timeline = ({ entries = mockEntries }: { entries?: Entry[] }) => {
             <i className="bi bi-tree-fill"></i>
           </div>
           <div className={styles.timelineContent}>
-            <TimelineItem entry={event} />
+            <TimelineItem entry={event} handleDelete={handleDelete} />
           </div>
         </div>
       ))}

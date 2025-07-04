@@ -1,6 +1,6 @@
 import { Entry } from "@/types";
 
-export const TimelineItem = ({ entry }: { entry: Entry }) => {
+export const TimelineItem = ({ entry, handleDelete }: { entry: Entry, handleDelete: (id: string) => void }) => {
     function formatDateForDisplay(date: string) {
       const dateObj = new Date(date);
       return dateObj.toLocaleDateString('pt-BR', {
@@ -10,13 +10,21 @@ export const TimelineItem = ({ entry }: { entry: Entry }) => {
     }
   
     return (
-      <div>
+      <>
         <p className="ms-3 mb-1">
           <small className="text-body-secondary fw-bold">
             {formatDateForDisplay(entry.dateEntry)}
           </small>
         </p>
-        <div className="card mb-3">
+        <div className="card mb-3 position-relative">
+          <div className="position-absolute top-0 end-0">
+            <button type="button" className="btn btn-link btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+              <i className="bi bi-three-dots-vertical text-muted"></i>
+            </button>
+            <ul className="dropdown-menu">
+              <li><button onClick={() => handleDelete(entry._id)} className="dropdown-item">Delete</button></li>
+            </ul>
+          </div>
           <div className="row g-0">
             <div className="col-md-4">
               <img
@@ -33,6 +41,6 @@ export const TimelineItem = ({ entry }: { entry: Entry }) => {
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   };
