@@ -2,7 +2,7 @@
 
 .mainTimeline {
     font-size: 14px;
-    width: 90%;
+    width: 100%;
     margin: 30px auto;
     line-height: 1.5em;
     position: relative;
@@ -32,38 +32,29 @@
 }
 
 .mainTimeline .timelineItem .timelineIcon {
-    width: 50px;
-    height: 50px;
+    height: 25px;
+    aspect-ratio: 1/1;
     position: absolute;
     top: 0;
     left: 50%;
+    rotate: 45deg;
+    transform: translateX(-50%) translateY(20%);
     background-color: var.$timeline-primary;
-    border-radius: 50%;
-    margin-left: -25px;
+    border-radius: 25%;
+    margin-left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
 }
-
-.mainTimeline .timelineItem .timelineContent {
-    width: 45%;
-    padding: 20px;
-    position: relative;
-    border-radius: 5px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    transition: all 0.3s ease;
+.mainTimeline .timelineItem .timelineIcon i {
+    font-size: 16px;
+    rotate: -45deg;
 }
 
-.mainTimeline .timelineItem .timelineContent h5 {
-    padding: 15px;
-    color: #fff;
-    margin: -20px -20px 0px -20px;
-    font-weight: 500;
-    border-radius: 3px 3px 0 0;
-    background-color: var.$timeline-primary;
-    text-align: center;
+.mainTimeline .timelineItem .timelineContent {
+    width: 47%;
+    position: relative;
 }
 
 .mainTimeline .timelineItem .timelineContent img {
@@ -72,27 +63,8 @@
     object-fit: cover;
 }
 
-.mainTimeline .timelineItem .timelineContent::before {
-    content: '';
-    position: absolute;
-    top: 20px;
-    right: -5px;
-    width: 14px;
-    height: 14px;
-    display: block;
-    border-radius: 3px;
-    transform: rotate(45deg);
-    background-color: var.$timeline-primary;
-}
-
 .mainTimeline .timelineItem:nth-child(even) .timelineContent {
     float: right;
-}
-
-.mainTimeline .timelineItem:nth-child(even) .timelineContent::before {
-    left: -5px;
-    right: auto;
-    transform: rotate(-45deg);
 }
 
 .mainTimeline .timelineItem::after,
@@ -119,10 +91,5 @@
     .mainTimeline .timelineItem .timelineContent {
         width: 90%;
         float: right;
-    }
-
-    .mainTimeline .timelineItem .timelineContent::before {
-        left: -5px;
-        right: inherit;
     }
 }

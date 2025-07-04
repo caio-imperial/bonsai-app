@@ -1,37 +1,39 @@
-import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function NewEntry() {
-  const router = useRouter()
-  const { id } = router.query
+  const router = useRouter();
+  const { id } = router.query;
 
-  const [note, setNote] = useState('')
-  const [dateEntry, setDateEntry] = useState(new Date().toISOString().slice(0, 10))
-  const [image, setImage] = useState<File | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [note, setNote] = useState("");
+  const [dateEntry, setDateEntry] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
+  const [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!image || !id) return
+    e.preventDefault();
+    if (!image || !id) return;
 
-    setLoading(true)
+    setLoading(true);
 
-    const form = new FormData()
-    form.append('image', image)
-    form.append('note', note)
-    form.append('dateEntry', dateEntry)
-    form.append('bonsaiId', id.toString())
+    const form = new FormData();
+    form.append("image", image);
+    form.append("note", note);
+    form.append("dateEntry", dateEntry + "T12:00:00.000Z");
 
-    await fetch('/api/entries', {
-      method: 'POST',
+    await fetch(`/api/bonsais/${id}/entries`, {
+      method: "POST",
       body: form,
-    })
+    });
 
-    router.push(`/bonsais/${id}`)
+    router.push(`/bonsais/${id}`);
   }
 
   return (
     <div className="container mt-5">
+      {dateEntry}
       <h1 className="mb-4">📸 Novo registro</h1>
 
       <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -67,9 +69,9 @@ export default function NewEntry() {
         </div>
 
         <button className="btn btn-primary" disabled={loading}>
-          {loading ? 'Salvando...' : 'Salvar registro'}
+          {loading ? "Salvando..." : "Salvar registro"}
         </button>
       </form>
     </div>
-  )
+  );
 }

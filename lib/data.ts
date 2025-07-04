@@ -1,38 +1,42 @@
 // lib/data.ts
-import clientPromise from '@/lib/mongodb'
-import { ObjectId } from 'mongodb'
+import clientPromise from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
 
 // 🪴 Buscar todos os bonsais
 export async function getBonsais() {
-  const client = await clientPromise
-  const db = client.db('bonsais')
-  const bonsais = await db.collection('bonsais').find().sort({ createdAt: -1 }).toArray()
-  return bonsais
+  const client = await clientPromise;
+  const db = client.db("bonsais");
+  const bonsais = await db
+    .collection("bonsais")
+    .find()
+    .sort({ createdAt: -1 })
+    .toArray();
+  return bonsais;
 }
 
 // 🪴 Criar um novo bonsai
 export async function createBonsai(name: string, species?: string) {
-  const client = await clientPromise
-  const db = client.db('bonsais')
+  const client = await clientPromise;
+  const db = client.db("bonsais");
   const newBonsai = {
     name,
-    species: species || '',
+    species: species || "",
     createdAt: new Date(),
-  }
-  const result = await db.collection('bonsais').insertOne(newBonsai)
-  return result.insertedId
+  };
+  const result = await db.collection("bonsais").insertOne(newBonsai);
+  return result.insertedId;
 }
 
 // 📸 Buscar registros de um bonsai
 export async function getEntries(bonsaiId: string) {
-  const client = await clientPromise
-  const db = client.db('bonsais')
+  const client = await clientPromise;
+  const db = client.db("bonsais");
   const entries = await db
-    .collection('entries')
+    .collection("entries")
     .find({ bonsaiId: new ObjectId(bonsaiId) })
-    .sort({ createdAt: -1 })
-    .toArray()
-  return entries
+    .sort({ dateEntry: -1 })
+    .toArray();
+  return entries;
 }
 
 // 📸 Criar novo registro com imagem
@@ -42,29 +46,55 @@ export async function createEntry(
   notes: string,
   dateEntry: string
 ) {
-  const client = await clientPromise
-  const db = client.db('bonsais')
+  const client = await clientPromise;
+  const db = client.db("bonsais");
   const newEntry = {
     bonsaiId: new ObjectId(bonsaiId),
     imageUrl,
     notes,
     dateEntry: new Date(dateEntry),
     createdAt: new Date(),
-  }
-  const result = await db.collection('entries').insertOne(newEntry)
-  return result.insertedId
+  };
+  const result = await db.collection("entries").insertOne(newEntry);
+  return result.insertedId;
 }
 
+// 📸 Atualizar um registro com imagem
+export async function updateEntry(
+  id: string,
+  imageUrl?: string,
+  notes?: string,
+  dateEntry?: string
+) {
+  const client = await clientPromise;
+  const db = client.db("bonsais");
+  const entry = await db
+    .collection("entries")
+    .findOne({ _id: new ObjectId(id) });
+  if (!entry) {
+    throw new Error("Registro não encontrado");
+  }
+  const updateData = {
+    ...(imageUrl && { imageUrl }),
+    ...(notes && { notes }),
+    ...(dateEntry && { dateEntry: new Date(dateEntry) }),
+  };
+  await db.collection("entries").updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+}
+
+// 🪴 Deletar um bonsai
 export async function deleteBonsai(id: string): Promise<void> {
   const client = await clientPromise;
-  const db = client.db('bonsais');
-  const bonsai = await db.collection('bonsais').findOne({ _id: new ObjectId(id) })
+  const db = client.db("bonsais");
+  const bonsai = await db
+    .collection("bonsais")
+    .findOne({ _id: new ObjectId(id) });
   if (!bonsai) {
-    throw new Error('Bonsai não encontrado')
+    throw new Error("Bonsai não encontrado");
   }
-  const entries = await getEntries(id)
+  const entries = await getEntries(id);
   for (const entry of entries) {
-    await db.collection('entries').deleteOne({ _id: new ObjectId(entry._id) })
+    await db.collection("entries").deleteOne({ _id: new ObjectId(entry._id) });
   }
-  await db.collection('bonsais').deleteOne({ _id: new ObjectId(id) });
+  await db.collection("bonsais").deleteOne({ _id: new ObjectId(id) });
 }

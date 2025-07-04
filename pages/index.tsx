@@ -4,8 +4,8 @@ import Link from 'next/link'
 
 type Bonsai = {
   _id: string
-  nome: string
-  especie?: string
+  name: string
+  species?: string
 }
 
 export default function Home() {
@@ -44,8 +44,8 @@ export default function Home() {
               key={bonsai._id}
               className="list-group-item list-group-item-action"
             >
-              <strong>{bonsai.nome}</strong>
-              {bonsai.especie && <span className="text-muted"> — {bonsai.especie}</span>}
+              <strong>{bonsai.name}</strong>
+              {bonsai.species && <span className="text-muted"> — {bonsai.species}</span>}
               <button
                 onClick={(e) => handleDelete(e, bonsai._id)}
                 className="btn btn-danger btn-sm float-end"
