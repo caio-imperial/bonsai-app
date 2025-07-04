@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <div className="container">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-grid gap-2 d-md-flex justify-content-md-between align-items-md-center mb-2 mb-md-4">
         <h1 className="mb-0">🌱 Meus Bonsais</h1>
         <Link href="/bonsais/new" className="btn btn-primary btn-sm">
           <i className="bi bi-plus" /> Novo Bonsai

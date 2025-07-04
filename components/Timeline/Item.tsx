@@ -17,11 +17,11 @@ export const TimelineItem = ({ entry, handleDelete }: { entry: Entry, handleDele
           </small>
         </p>
         <div className="card mb-3 position-relative">
-          <div className="position-absolute top-0 end-0">
+          <div className="position-absolute bottom-0 end-0">
             <button type="button" className="btn btn-link btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
               <i className="bi bi-three-dots-vertical text-muted"></i>
             </button>
-            <ul className="dropdown-menu">
+            <ul className="dropdown-menu dropdown-menu-end">
               <li><button onClick={() => handleDelete(entry._id)} className="dropdown-item">Delete</button></li>
             </ul>
           </div>

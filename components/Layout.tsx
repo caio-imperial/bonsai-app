@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="col-auto col-md-3 col-xl-2 px-0">
                     <Sidebar />
                 </div>
-            <div className="col vh-100 overflow-auto px-4 py-3">
+            <div className="col vh-100 overflow-auto px-1 px-md-4 py-1 py-md-3">
                 {children}
             </div>
             </div>
