@@ -12,13 +12,18 @@ export default function NewBonsai() {
     e.preventDefault()
     setLoading(true)
 
-    await fetch('/api/bonsais', {
+    const response = await fetch('/api/bonsais', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, species }),
     })
 
-    router.push('/')
+    if (response.ok) {
+      const data = await response.json()
+      router.push(`/bonsais/${data.id}`)
+    } else {
+      console.error('Erro ao criar bonsai')
+    }
   }
 
   return (
