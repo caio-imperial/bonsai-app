@@ -49,6 +49,22 @@ export async function getEntries(bonsaiId: string) {
   return entries;
 }
 
+// 📸 Buscar um registro de um bonsai
+export async function getEntry(entryId: string) {
+  if (!entryId) {
+    throw new Error("ID do registro não informado");
+  }
+  if (!ObjectId.isValid(entryId)) {
+    throw new Error("ID do registro inválido");
+  }
+  const client = await clientPromise;
+  const db = client.db("bonsais");
+  const entry = await db
+    .collection("entries")
+    .findOne({ _id: new ObjectId(entryId) });
+  return entry;
+}
+
 // 📸 Criar novo registro com imagem
 export async function createEntry({
   bonsaiId,

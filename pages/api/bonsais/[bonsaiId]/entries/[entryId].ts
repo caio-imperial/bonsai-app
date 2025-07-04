@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { IncomingForm, File as FormidableFile } from "formidable";
-import { deleteEntry, updateEntry } from "@/lib/data";
+import { deleteEntry, getEntry, updateEntry } from "@/lib/data";
 import { uploadToImgBB } from "@/lib/imgbb";
 
 // Desativa o bodyParser padrão do Next pra aceitar multipart/form-data
@@ -19,7 +19,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    return;
+    const entryId = req.query.entryId?.toString() || "";
+    const entry = await getEntry(entryId);
+    return res.status(200).json({ entry });
   } else if (req.method === "DELETE") {
     const entryId = req.query.entryId?.toString() || "";
     await deleteEntry(entryId);
@@ -36,7 +38,7 @@ export default async function handler(
         return res.status(500).json({ error: "Erro ao processar o upload" });
       }
     
-      const entryId = req.query.id?.toString() || "";
+      const entryId = req.query.entryId?.toString() || "";
       const notes = fields.notes?.toString() || "";
       const dateEntry = fields.dateEntry?.toString() || new Date().toISOString();
     
