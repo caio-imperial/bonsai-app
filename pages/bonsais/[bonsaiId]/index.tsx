@@ -40,9 +40,14 @@ export default function TimelinePage() {
     <div className="container mt-2 mb-5-md">
       <div className="d-grid gap-2 d-md-flex justify-content-md-between align-items-md-center mb-2 mb-md-4">
         <h3 className="mb-0">{bonsai.name} {bonsai.species && <span className="text-muted"> — {bonsai.species}</span>}</h3>
-        <Link href={`/bonsais/${bonsaiId}/entries`} className="btn btn-primary">
-          <i className="bi bi-plus" /> Adicionar registro
-        </Link>
+        <div className="btn-group">
+          <Link href={`/bonsais/${bonsaiId}/edit`} className="btn btn-outline-primary">
+            <i className="bi bi-pencil" /> Editar
+          </Link>
+          <Link href={`/bonsais/${bonsaiId}/entries`} className="btn btn-primary">
+            <i className="bi bi-plus" /> Adicionar registro
+          </Link>
+        </div>
       </div>
 
 
