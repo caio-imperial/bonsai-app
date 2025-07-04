@@ -37,24 +37,33 @@ export default function Home() {
       {bonsais.length === 0 ? (
         <p>Você ainda não tem nenhum bonsai cadastrado 😢</p>
       ) : (
-        <div className="list-group">
+        <ul className="list-group">
           {bonsais.map((bonsai) => (
-            <Link
-              href={`/bonsais/${bonsai._id}`}
-              key={bonsai._id}
-              className="list-group-item list-group-item-action"
-            >
-              <strong>{bonsai.name}</strong>
-              {bonsai.species && <span className="text-muted"> — {bonsai.species}</span>}
-              <button
-                onClick={(e) => handleDelete(e, bonsai._id)}
-                className="btn btn-danger btn-sm float-end"
+            <li key={bonsai._id} className="d-flex justify-content-between align-items-center list-group-item ">
+              <Link
+                href={`/bonsais/${bonsai._id}`}
+                className="link-dark"
               >
-                <i className="bi bi-trash" />
-              </button>
-            </Link>
+                <strong>{bonsai.name}</strong>
+                {bonsai.species && <span className="text-muted"> — {bonsai.species}</span>}
+              </Link>
+              <div className="btn-group me-2">
+                <Link
+                  href={`/bonsais/${bonsai._id}/edit`}
+                  className="btn btn-primary btn-sm"
+                >
+                  <i className="bi bi-pencil" />
+                </Link>
+                <button
+                  onClick={(e) => handleDelete(e, bonsai._id)}
+                  className="btn btn-danger btn-sm"
+                >
+                  <i className="bi bi-trash" />
+                </button>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   )
