@@ -28,11 +28,12 @@ export default function Home() {
 
   return (
     <div className="container">
-      <h1 className="mb-4">🌱 Meus Bonsais</h1>
-
-      <Link href="/bonsais/new" className="btn btn-primary mb-4">
-        Novo Bonsai
-      </Link>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="mb-0">🌱 Meus Bonsais</h1>
+        <Link href="/bonsais/new" className="btn btn-primary btn-sm">
+          <i className="bi bi-plus" /> Novo Bonsai
+        </Link>
+      </div>
 
       {bonsais.length === 0 ? (
         <p>Você ainda não tem nenhum bonsai cadastrado 😢</p>
