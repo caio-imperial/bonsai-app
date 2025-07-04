@@ -6,6 +6,7 @@ export default function NewEntry() {
   const { bonsaiId } = router.query;
 
   const [notes, setNotes] = useState("");
+  const [title, setTitle] = useState("");
   const [dateEntry, setDateEntry] = useState(
     new Date().toISOString().slice(0, 10)
   );
@@ -21,6 +22,7 @@ export default function NewEntry() {
     const form = new FormData();
     form.append("image", image);
     form.append("notes", notes);
+    form.append("title", title);
     form.append("dateEntry", dateEntry + "T12:00:00.000Z");
 
     await fetch(`/api/bonsais/${bonsaiId}/entries`, {
@@ -44,6 +46,16 @@ export default function NewEntry() {
             required
             accept="image/*"
             onChange={(e) => setImage(e.target.files?.[0] || null)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Título</label>
+          <input
+            type="text"
+            className="form-control"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 

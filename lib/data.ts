@@ -69,6 +69,7 @@ export async function getEntry(entryId: string) {
 export async function createEntry({
   bonsaiId,
   imageUrl,
+  title,
   notes,
   dateEntry,
 }: Omit<Entry, "_id" | "createdAt">) {
@@ -77,6 +78,7 @@ export async function createEntry({
   const newEntry = {
     bonsaiId: new ObjectId(bonsaiId),
     imageUrl,
+    title,
     notes,
     dateEntry: new Date(dateEntry),
     createdAt: new Date(),
@@ -101,6 +103,7 @@ export async function updateBonsai(
 export async function updateEntry({
   _id,
   imageUrl,
+  title,
   notes,
   dateEntry,
 }: Partial<Entry>) {
@@ -120,9 +123,11 @@ export async function updateEntry({
   }
   const updateData = {
     ...(imageUrl && { imageUrl }),
+    ...(title && { title }),
     ...(notes && { notes }),
     ...(dateEntry && { dateEntry: new Date(dateEntry) }),
   };
+  console.log('updateData', updateData)
   await db
     .collection("entries")
     .updateOne({ _id: new ObjectId(_id) }, { $set: updateData });

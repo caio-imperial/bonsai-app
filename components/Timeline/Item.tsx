@@ -57,7 +57,7 @@ export const TimelineItem = ({
           </div>
           <div className="col-md-8">
             <div className="card-body">
-              <h5 className="card-title">Action</h5>
+              <h5 className="card-title">{entry.title}</h5>
               <p className="card-text">{entry.notes}</p>
             </div>
           </div>

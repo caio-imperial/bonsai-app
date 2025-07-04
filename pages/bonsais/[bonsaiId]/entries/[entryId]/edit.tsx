@@ -17,6 +17,7 @@ export default function EditEntry() {
     imageUrl: '',
     createdAt: '',
     dateEntry: '',
+    title: '',
     notes: '',
     image: null,
   })
@@ -29,7 +30,6 @@ export default function EditEntry() {
       .then(data => {
         setEntry(data.entry)
         setLoading(false)
-        console.log('data', data)
       })
   }, [entryId, bonsaiId])
 
@@ -40,10 +40,10 @@ export default function EditEntry() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-  
     const formData = new FormData()
     formData.append('dateEntry', entry.dateEntry)
     formData.append('notes', entry.notes)
+    formData.append('title', entry.title)
     if (entry.image) {
       formData.append('image', entry.image)
     }
@@ -87,6 +87,17 @@ export default function EditEntry() {
                 }
                 }}
             />
+        </div>
+
+        <div className="col-12">
+          <label className="form-label">Título</label>
+          <input
+            type="text"
+            name="title"
+            className="form-control"
+            value={entry.title}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="col-12">

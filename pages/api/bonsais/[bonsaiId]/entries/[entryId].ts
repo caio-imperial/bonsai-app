@@ -40,6 +40,7 @@ export default async function handler(
     
       const entryId = req.query.entryId?.toString() || "";
       const notes = fields.notes?.toString() || "";
+      const title = fields.title?.toString() || "";
       const dateEntry = fields.dateEntry?.toString() || new Date().toISOString();
     
       const image = files.image as File | undefined;
@@ -54,7 +55,8 @@ export default async function handler(
       await updateEntry({
         _id: entryId,
         imageUrl,
-        notes: notes,
+        title,
+        notes,
         dateEntry,
       });
     
