@@ -1,17 +1,12 @@
-// components/Layout.tsx
-import Sidebar from './Sidebar'
+import { Toaster } from "./ui/sonner";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="container-fluid">
-            <div className="row vh-100">
-                <div className="col-auto col-md-3 col-xl-2 px-0">
-                    <Sidebar />
-                </div>
-            <div className="col vh-100 overflow-auto px-1 px-md-4 py-1 py-md-3">
-                {children}
-            </div>
-            </div>
-        </div>
-    )
+  return (
+    <>
+      <main className="w-full px-7 max-w-7xl mx-auto">
+        {children}
+      </main>
+      <Toaster position="top-center" closeButton />
+    </>
+  )
 }
