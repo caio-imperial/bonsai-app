@@ -64,7 +64,11 @@ export default function Home() {
                 href={`/bonsais/${bonsai._id}`}
                 key={bonsai._id}
               >
-                <CardBonsai name={bonsai.name} species={bonsai.species} />
+                <CardBonsai 
+                  name={bonsai.name}
+                  species={bonsai.species}
+                  bonsaiId={bonsai._id}
+                />
               </Link>
             ))}
           </>
