@@ -7,3 +7,5 @@ export interface Entry {
     notes: string
     createdAt: string
 }
+
+export type EntryResponse = Entry[] | null

@@ -4,3 +4,5 @@ export interface Bonsai {
     species: string
     createdAt: string
 }
+
+export type BonsResponse = Bonsai | null
