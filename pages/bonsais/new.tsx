@@ -82,7 +82,7 @@ export default function NewBonsai() {
               disabled={loading}
               className="w-full cursor-pointer"
               variant="secondary"
-              onClick={handleSubmit}
+              type="submit"
             >
               {loading ? (
                 <>
