@@ -9,7 +9,7 @@ Feito com Next.js, MongoDB e muito amor 💗
 * 🗂️ Visualizar a linha do tempo de cada bonsai
 * ✏️ Editar e excluir bonsais e registros
 * 💾 Upload de imagens via ImgBB
-* 🌙 Tema escuro e claro com Bootstrap + Tailwind/Shadcn
+* 🌙 Tema escuro e claro Tailwind/Shadcn
 * 📱 Layout responsivo e mobile first
 
 ## 🛠️ Tecnologias Usadas
