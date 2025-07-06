@@ -31,7 +31,7 @@ export default function NewEntry() {
     }
     form.append("notes", notes);
     form.append("title", title);
-    form.append("dateEntry", dateEntry + "T12:00:00.000Z");
+    form.append("dateEntry", dateEntry.toISOString());
 
     await fetch(`/api/bonsais/${bonsaiId}/entries`, {
       method: "POST",
