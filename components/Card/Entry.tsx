@@ -115,11 +115,11 @@ export function CardEntry({
               <DropdownMenuItem onClick={() => handleDelete(entryId)}>
                   Apagar
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href={`/bonsais/${bonsaiId}/entries/${entryId}/edit`}>
+              <Link href={`/bonsais/${bonsaiId}/entries/${entryId}/edit`}>
+                <DropdownMenuItem>
                   Editar
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuLabel>Ações</DropdownMenuLabel>
             </DropdownMenuGroup>
           </DropdownMenuContent>
