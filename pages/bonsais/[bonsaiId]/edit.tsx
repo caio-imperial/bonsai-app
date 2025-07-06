@@ -1,35 +1,22 @@
-import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { ArrowLeftIcon, Loader2Icon, PlusIcon } from "lucide-react"
+import { ArrowLeftIcon, Loader2Icon, SaveIcon, XIcon } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner";
+import { useBonsai } from "@/hooks/useBonsai"
 
 export default function EditBonsai() {
   const router = useRouter()
   const { bonsaiId } = router.query
 
-  const [bonsai, setBonsai] = useState({
-    name: "",
-    species: ""
-  })
-
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (!bonsaiId) return
-    fetch(`/api/bonsais/${bonsaiId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setBonsai(data.bonsai)
-        setLoading(false)
-      })
-  }, [bonsaiId])
+  const { bonsai, loading, setBonsai } = useBonsai(bonsaiId as string | undefined)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBonsai({ ...bonsai, [e.target.name]: e.target.value })
+    if (bonsai) {
+      setBonsai({ ...bonsai, [e.target.name]: e.target.value })
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,7 +35,7 @@ export default function EditBonsai() {
   }
 
   if (loading) return <p>Carregando seu bonsai... 🌿</p>
-
+  if (!bonsai) return <p>Bonsai não encontrado</p>
   return (
     <div className="flex flex-col gap-5 mt-5">
       <Link href="/">
@@ -86,24 +73,34 @@ export default function EditBonsai() {
               />
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex justify-end gap-2">
             <Button
               disabled={loading}
-              className="w-full cursor-pointer"
+              className="cursor-pointer"
               variant="secondary"
               onClick={handleSubmit}
             >
               {loading ? (
                 <>
                   <Loader2Icon className="w-4 h-4 animate-spin mr-2" />
-                  Cadastrando...
+                  Atualizando...
                 </>
               ) : (
                 <>
-                  <PlusIcon className="w-4 h-4 mr-2" />
-                  Cadastrar
+                  <SaveIcon className="w-4 h-4 mr-2" />
+                  Atualizar
                 </>
               )}
+            </Button>
+            <Button
+              disabled={loading}
+              className="cursor-pointer"
+              variant="destructive"
+              asChild
+            >
+              <Link href="/">
+                Cancelar
+              </Link>
             </Button>
           </CardFooter>
         </Card>
