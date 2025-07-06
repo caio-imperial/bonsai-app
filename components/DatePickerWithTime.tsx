@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { ChevronDownIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -12,17 +11,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useState } from "react"
 import { useEffect } from "react"
 
+
 export function DatePickerWithTime( { initialDate, onDateChange }: { initialDate?: Date, onDateChange?: (date: Date) => void } ) {
-  const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date>(initialDate || new Date())
+  const [open, setOpen] = useState(false)
+  const [date, setDate] = useState<Date>(initialDate || new Date())
 
   useEffect(() => {
-    if (onDateChange) {
-      onDateChange(date)
-    }
+    onDateChange?.(date)
   }, [date, onDateChange])
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [hours, minutes] = e.target.value.split(':')
+    setDate(new Date(date.setHours(Number(hours), Number(minutes), 0, 0)))
+  }
 
   return (
     <div className="flex gap-4">
@@ -62,7 +66,8 @@ export function DatePickerWithTime( { initialDate, onDateChange }: { initialDate
           type="time"
           id="time-picker"
           step="1"
-          defaultValue="10:30:00"
+          defaultValue={date.toLocaleTimeString()}
+          onChange={handleTimeChange}
           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
       </div>
