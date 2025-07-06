@@ -13,9 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!bonsai) return res.status(404).json({ error: 'Bonsai não encontrado' })
 
-    const entries = await getEntries(id)
-
-    res.status(200).json({ bonsai, entries })
+    res.status(200).json(bonsai)
   }
   else if (req.method === 'PATCH') {
     const { bonsaiId } = req.query
