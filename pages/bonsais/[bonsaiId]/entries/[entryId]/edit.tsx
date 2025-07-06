@@ -2,9 +2,18 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Entry } from '@/types'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { ArrowLeftIcon, Loader2, SaveIcon, XIcon } from 'lucide-react';
+import { DatePickerWithTime } from '@/components/DatePickerWithTime';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
-interface EditEntry extends Entry {
+interface EditEntry extends Omit<Entry, 'dateEntry'> {
   image: File | null
+  dateEntry: Date
 }
 
 export default function EditEntry() {
@@ -16,7 +25,7 @@ export default function EditEntry() {
     bonsaiId: bonsaiId as string,
     imageUrl: '',
     createdAt: '',
-    dateEntry: '',
+    dateEntry: new Date(),
     title: '',
     notes: '',
     image: null,
@@ -24,16 +33,25 @@ export default function EditEntry() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!entryId) return
+    if (!entryId || typeof entryId !== 'string') return; // Ensure entryId is a valid string
     fetch(`/api/bonsais/${bonsaiId}/entries/${entryId}`)
-      .then(res => res.json())
-      .then(data => {
-        setEntry(data.entry)
-        setLoading(false)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch entry');
+        }
+        return res.json();
       })
-  }, [entryId, bonsaiId])
+      .then(data => {
+        setEntry({ ...data.entry, dateEntry: new Date(data.entry.dateEntry) });
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error(error);
+        toast('Erro ao carregar registro');
+        setLoading(false); // Ensure loading is set to false on error
+      });
+  }, [entryId, bonsaiId]);
 
-  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEntry({ ...entry, [e.target.name]: e.target.value })
   }
@@ -41,82 +59,84 @@ export default function EditEntry() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
-    formData.append('dateEntry', entry.dateEntry)
+    formData.append('dateEntry', entry.dateEntry.toISOString())
     formData.append('notes', entry.notes)
     formData.append('title', entry.title)
     if (entry.image) {
       formData.append('image', entry.image)
     }
-  
-    await fetch(`/api/bonsais/${bonsaiId}/entries/${entryId}`, {
+
+    const response = await fetch(`/api/bonsais/${bonsaiId}/entries/${entryId}`, {
       method: 'PATCH',
       body: formData
     })
-  
-    router.push(`/bonsais/${bonsaiId}`)
+
+    if (response.ok) {
+      router.push(`/bonsais/${bonsaiId}`)
+    } else {
+      const data = await response.json();
+      toast(data.message || 'Erro ao atualizar entrada');
+    }
   }
 
   if (loading) return <p className="text-center mt-4">Carregando registro... 🌱</p>
+  const dateEntry = new Date(entry.dateEntry)
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Editar Registro 🌿</h2>
-      <form onSubmit={handleSubmit} className="row g-3" encType="multipart/form-data">
-        <div className="col-md-6">
-          <label className="form-label">Data do registro</label>
-          <input
-            type="date"
-            name="dateEntry"
-            className="form-control"
-            value={entry.dateEntry?.slice(0, 10)}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="col-md-6">
-            <label className="form-label">Nova imagem</label>
-            <input
-                type="file"
-                name="image"
-                className="form-control"
-                accept="image/*"
-                onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                    setEntry({ ...entry, image: e.target.files[0] })
-                }
-                }}
-            />
-        </div>
-
-        <div className="col-12">
-          <label className="form-label">Título</label>
-          <input
-            type="text"
-            name="title"
-            className="form-control"
-            value={entry.title}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="col-12">
-          <label className="form-label">Notas</label>
-          <textarea
-            name="notes"
-            className="form-control"
-            rows={4}
-            value={entry.notes}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="col-12">
-          <div className="btn-group">
-            <button type="submit" className="btn btn-primary">Salvar</button>
-            <Link href={`/bonsais/${bonsaiId}`} className="btn btn-outline-danger">Cancelar</Link>
-          </div>
-        </div>
+    <div className="flex flex-col gap-5 mt-5">
+      <Link href={`/bonsais/${bonsaiId}`}>
+        <ArrowLeftIcon className="w-6 h-6" />
+      </Link>
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center"
+      >
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Editar registro</CardTitle>
+            <CardDescription>
+              Edite os dados de registro do seu bonsai
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <Label htmlFor="dateEntry">Data</Label>
+            <DatePickerWithTime initialDate={dateEntry} onDateChange={(date) => {
+              if (date?.toISOString() !== entry.dateEntry.toISOString()) {
+                handleChange({ target: { name: 'dateEntry', value: date } } as unknown as React.ChangeEvent<HTMLInputElement>)
+              }
+            }} />
+            <Label htmlFor="title">Título</Label>
+            <Input type="text" name="title" value={entry.title} onChange={handleChange} />
+            <Label htmlFor="notes">Notas</Label>
+            <Textarea name="notes" value={entry.notes} onChange={handleChange} />
+          </CardContent>
+          <CardFooter className="flex justify-end gap-2">
+            <Button
+              disabled={loading}
+              type="submit"
+              variant="secondary"
+              className="cursor-pointer"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Atualizando...
+                </>
+              ) : (
+                <>
+                  <SaveIcon className="w-4 h-4 mr-2" />
+                  Salvar
+                </>
+              )}
+            </Button>
+            <Button variant="destructive" className="cursor-pointer" asChild>
+              <Link href={`/bonsais/${bonsaiId}`} className="flex items-center gap-2">
+                <XIcon className="w-4 h-4" />
+                Cancelar
+              </Link>
+            </Button>
+          </CardFooter>
+        </Card>
       </form>
     </div>
   )

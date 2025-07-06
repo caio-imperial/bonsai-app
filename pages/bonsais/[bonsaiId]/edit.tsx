@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
+import { ArrowLeftIcon, Loader2Icon, PlusIcon } from "lucide-react"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { toast } from "sonner";
 
 export default function EditBonsai() {
   const router = useRouter()
@@ -29,44 +34,79 @@ export default function EditBonsai() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch(`/api/bonsais/${bonsaiId}`, {
+    const response = await fetch(`/api/bonsais/${bonsaiId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(bonsai)
     })
-    router.push("/")
+    if (response.ok) {
+      router.push("/")
+    } else {
+      const data = await response.json();
+      toast(data.message || 'Erro ao atualizar bonsai');
+    }
   }
 
   if (loading) return <p>Carregando seu bonsai... 🌿</p>
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Editar bonsai 🌱</h2>
-      <form onSubmit={handleSubmit} className="row g-3">
-        <div className="col-md-6">
-          <label className="form-label">Nome</label>
-          <input
-            name="name"
-            value={bonsai.name}
-            onChange={handleChange}
-            className="form-control"
-            required
-          />
-        </div>
-        <div className="col-md-6">
-          <label className="form-label">Espécie</label>
-          <input
-            name="species"
-            value={bonsai.species}
-            onChange={handleChange}
-            className="form-control"
-            required
-          />
-        </div>
-        <div className="btn-group">
-          <button type="submit" className="btn btn-primary">Salvar</button>
-          <Link href={`/bonsais/${bonsaiId}`} className="btn btn-outline-danger">Cancelar</Link>
-        </div>
+    <div className="flex flex-col gap-5 mt-5">
+      <Link href="/">
+        <ArrowLeftIcon className="w-6 h-6" />
+      </Link>
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center"
+      >
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Editar bonsai</CardTitle>
+            <CardDescription>
+              Edite os dados do seu bonsai
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div>
+              <label className="text-sm font-medium">Nome</label>
+              <Input
+                type="text"
+                name="name"
+                value={bonsai.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Espécie (opcional)</label>
+              <Input
+                type="text"
+                name="species"
+                value={bonsai.species}
+                onChange={handleChange}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button
+              disabled={loading}
+              className="w-full cursor-pointer"
+              variant="secondary"
+              onClick={handleSubmit}
+            >
+              {loading ? (
+                <>
+                  <Loader2Icon className="w-4 h-4 animate-spin mr-2" />
+                  Cadastrando...
+                </>
+              ) : (
+                <>
+                  <PlusIcon className="w-4 h-4 mr-2" />
+                  Cadastrar
+                </>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
       </form>
     </div>
   )

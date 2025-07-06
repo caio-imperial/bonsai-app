@@ -1,19 +1,34 @@
 import React from "react";
 import styles from "./Timeline.module.scss";
 import { mockEntries } from "./mockData";
-import { TimelineItem } from "./Item";
 import { Entry } from "@/types";
+import { TreePine } from "lucide-react";
+import { CardEntry } from "../Card/Entry";
 
-const Timeline = ({ entries = mockEntries, handleDelete }: { entries?: Entry[], handleDelete: (id: string) => void }) => {
+const Timeline = ({
+  entries = mockEntries,
+  handleDelete,
+}: {
+  entries?: Entry[];
+  handleDelete: (id: string) => void;
+}) => {
   return (
     <div className={styles.mainTimeline}>
-      {entries.map((event, index) => (
+      {entries.map((entry, index) => (
         <div className={styles.timelineItem} key={index}>
           <div className={styles.timelineIcon}>
-            <i className="bi bi-tree-fill"></i>
+            <TreePine className="w-4 h-4" />
           </div>
           <div className={styles.timelineContent}>
-            <TimelineItem entry={event} handleDelete={handleDelete} />
+            <CardEntry
+              bonsaiId={entry.bonsaiId}
+              entryId={entry._id}
+              title={entry.title}
+              note={entry.notes}
+              imageUrl={entry.imageUrl}
+              dateEntry={entry.dateEntry}
+              handleDelete={handleDelete}
+            />
           </div>
         </div>
       ))}

@@ -23,21 +23,37 @@ export default async function handler(
       keepExtensions: true,
       maxFileSize: 32 * 1024 * 1024, // 32MB
     });
+    const bonsaiId = req.query.bonsaiId?.toString() || "";
 
     form.parse(req, async (err, fields, files: Files) => {
-      if (err) {
-        console.error("Erro no form:", err);
-        return res.status(500).json({ error: "Erro ao processar o upload" });
+      const dateEntry = fields.dateEntry?.toString() || null;
+      if (!dateEntry) {
+        return res.status(422).json({ 
+          error: "Atributo dateEntry e obrigatório",
+          message: "Para registrar um registro, é necessário informar a data de registro",
+        });
+      }
+  
+      const title = fields.title?.toString() || null;
+      if (!title) {
+        return res.status(422).json({ 
+          error: "Atributo title e obrigatório",
+          message: "Para registrar um registro, é necessário informar o título",
+        });
       }
 
-      const bonsaiId = req.query.bonsaiId?.toString() || "";
+      if (err) {
+        return res.status(500).json({ 
+          error: "Erro no form:", err,
+          message: "Erro ao processar o upload da imagem",
+        });
+      }
+
       const notes = fields.notes?.toString() || "";
-      const dateEntry =
-        fields.dateEntry?.toString() || new Date().toISOString();
 
       const image = files.image as File | undefined;
       if (!image || (Array.isArray(image) && image.length === 0)) {
-        return res.status(400).json({ error: "Imagem inválida" });
+        return res.status(400).json({ error: "Imagem inválida", message: "Para registrar um registro, é necessário informar uma imagem" });
       }
 
       const fileToUpload = Array.isArray(image) ? image[0] : image;
@@ -47,6 +63,7 @@ export default async function handler(
       await createEntry({
         bonsaiId,
         imageUrl,
+        title,
         notes,
         dateEntry,
       });

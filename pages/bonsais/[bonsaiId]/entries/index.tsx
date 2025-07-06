@@ -1,5 +1,14 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftIcon, Loader2, PlusIcon } from "lucide-react";
+import Link from "next/link";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { DatePickerWithTime } from "@/components/DatePickerWithTime";
+import { toast } from "sonner";
 
 export default function NewEntry() {
   const router = useRouter();
@@ -7,81 +16,105 @@ export default function NewEntry() {
 
   const [notes, setNotes] = useState("");
   const [title, setTitle] = useState("");
-  const [dateEntry, setDateEntry] = useState(
-    new Date().toISOString().slice(0, 10)
-  );
+  const [dateEntry, setDateEntry] = useState<Date>(new Date());
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!image || !bonsaiId) return;
 
     setLoading(true);
 
     const form = new FormData();
-    form.append("image", image);
+    if (image) {
+      form.append("image", image);
+    }
     form.append("notes", notes);
     form.append("title", title);
-    form.append("dateEntry", dateEntry + "T12:00:00.000Z");
+    form.append("dateEntry", dateEntry.toISOString());
 
     await fetch(`/api/bonsais/${bonsaiId}/entries`, {
       method: "POST",
       body: form,
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        toast.error(data.message);
+      } else {
+        router.push(`/bonsais/${bonsaiId}`);
+      }
     });
-
-    router.push(`/bonsais/${bonsaiId}`);
+    setLoading(false);
   }
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">📸 Novo registro</h1>
-
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="mb-3">
-          <label className="form-label">Imagem</label>
-          <input
-            type="file"
-            className="form-control"
-            required
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files?.[0] || null)}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Título</label>
-          <input
-            type="text"
-            className="form-control"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Nota</label>
-          <textarea
-            className="form-control"
-            rows={3}
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Data</label>
-          <input
-            type="date"
-            className="form-control"
-            value={dateEntry}
-            onChange={(e) => setDateEntry(e.target.value)}
-          />
-        </div>
-
-        <button className="btn btn-primary" disabled={loading}>
-          {loading ? "Salvando..." : "Salvar registro"}
-        </button>
+    <div className="flex flex-col gap-5 mt-5">
+      <Link href="/">
+        <ArrowLeftIcon className="w-6 h-6" />
+      </Link>
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center"
+      >
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Cadastrar registro</CardTitle>
+            <CardDescription>
+              Insira os dados de registro do seu bonsai
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <Label>Imagem</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files?.[0] || null)}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Título</Label>
+              <Input
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Observações</Label>
+              <Textarea
+                rows={4}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Data de registro</Label>
+              <DatePickerWithTime initialDate={dateEntry} onDateChange={setDateEntry} />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button
+              disabled={loading}
+              className="w-full"
+              onClick={handleSubmit}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Cadastrando...
+                </>
+              ) : (
+                <>
+                  <PlusIcon className="w-4 h-4 mr-2" />
+                  Cadastrar
+                </>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
       </form>
     </div>
   );

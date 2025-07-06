@@ -26,7 +26,7 @@ export default async function handler(
     const entryId = req.query.entryId?.toString() || "";
     await deleteEntry(entryId);
     return res.status(204).end();
-  }  else if (req.method === "PATCH") {
+  } else if (req.method === "PATCH") {
     const form = new IncomingForm({
       keepExtensions: true,
       maxFileSize: 32 * 1024 * 1024, // 32MB
@@ -35,32 +35,35 @@ export default async function handler(
     form.parse(req, async (err, fields, files: Files) => {
       if (err) {
         console.error("Erro no form:", err);
-        return res.status(500).json({ error: "Erro ao processar o upload" });
+        return res.status(500).json({ error: "Erro inesperado", message: "Falha ao processar o upload" });
       }
-    
+
       const entryId = req.query.entryId?.toString() || "";
       const notes = fields.notes?.toString() || "";
       const title = fields.title?.toString() || "";
       const dateEntry = fields.dateEntry?.toString() || new Date().toISOString();
-    
+
       const image = files.image as File | undefined;
       let imageUrl;
-    
+
       if (image && (Array.isArray(image) && image.length > 0)) {
         const fileToUpload = Array.isArray(image) ? image[0] : image;
         imageUrl = await uploadToImgBB(fileToUpload);
       }
-    
+
       // Chama a função de atualização, passando os campos opcionais
-      await updateEntry({
-        _id: entryId,
-        imageUrl,
-        title,
-        notes,
-        dateEntry,
-      });
-    
-      return res.status(200).json({ ok: true });
+      try {
+        await updateEntry({
+          _id: entryId,
+          imageUrl,
+          title,
+          notes,
+          dateEntry,
+        });
+        return res.status(200).json({ ok: true });
+      } catch {
+        return res.status(400).json({ error: 'Erro inesperado', message: 'Falha ao atualizar entrada' });
+      }
     });
   }
 }
