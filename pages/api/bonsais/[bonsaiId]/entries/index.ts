@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { IncomingForm, File as FormidableFile } from "formidable";
-import { createEntry } from "@/lib/data";
+import { createEntry, getEntries } from "@/lib/data";
 import { uploadToImgBB } from "@/lib/imgbb";
 
 // Desativa o bodyParser padrão do Next pra aceitar multipart/form-data
@@ -70,5 +70,9 @@ export default async function handler(
 
       return res.status(200).json({ ok: true });
     });
+  }else if (req.method === "GET") {
+    const bonsaiId = req.query.bonsaiId?.toString() || "";
+    const entries = await getEntries(bonsaiId);
+    return res.status(200).json(entries);
   }
 }
