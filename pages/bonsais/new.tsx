@@ -1,63 +1,104 @@
 // pages/novo-bonsai.tsx
-import { useState } from 'react'
-import { useRouter } from 'next/router'
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ArrowLeftIcon, Loader2, PlusIcon } from "lucide-react";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function NewBonsai() {
-  const [name, setName] = useState('')
-  const [species, setSpecies] = useState('')
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [name, setName] = useState("");
+  const [species, setSpecies] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
-    const response = await fetch('/api/bonsais', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/bonsais", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, species }),
-    })
+    });
 
     if (response.ok) {
-      const data = await response.json()
-      router.push(`/bonsais/${data.id}`)
+      const data = await response.json();
+      router.push(`/bonsais/${data.id}`);
+      setLoading(false);
     } else {
-      console.error('Erro ao criar bonsai')
+      const data = await response.json();
+      setLoading(false);
+      toast(data.message);
     }
   }
 
   return (
-    <div className="mt-5">
-      <h1 className="mb-4">Cadastrar novo bonsai</h1>
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Nome</label>
-          <input
-            type="text"
-            className="form-control"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Ex: Acer Palmatum"
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Espécie (opcional)</label>
-          <input
-            type="text"
-            className="form-control"
-            value={species}
-            onChange={(e) => setSpecies(e.target.value)}
-            placeholder="Ex: Maple Japonês"
-          />
-        </div>
-
-        <button className="btn btn-primary" disabled={loading}>
-          {loading ? 'Salvando...' : 'Salvar'}
-        </button>
+    <div className="flex flex-col gap-5 mt-5">
+      <Link href="/">
+        <ArrowLeftIcon className="w-6 h-6" />
+      </Link>
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center"
+      >
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Cadastrar bonsai</CardTitle>
+            <CardDescription>
+              Insira os dados do seu bonsai para começar a cuidar dele
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div>
+              <label className="text-sm font-medium">Nome</label>
+              <Input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Espécie (opcional)</label>
+              <Input
+                type="text"
+                value={species}
+                onChange={(e) => setSpecies(e.target.value)}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button
+              disabled={loading}
+              className="w-full cursor-pointer"
+              variant="secondary"
+              onClick={handleSubmit}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Cadastrando...
+                </>
+              ) : (
+                <>
+                  <PlusIcon className="w-4 h-4 mr-2" />
+                  Cadastrar
+                </>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
       </form>
     </div>
-  )
+  );
 }
