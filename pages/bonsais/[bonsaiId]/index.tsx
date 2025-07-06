@@ -66,7 +66,7 @@ export default function TimelinePage() {
               <PencilIcon className="w-4 h-4" /> Editar
             </Link>
           </Button>
-          <Button variant="default" disabled={loading}>
+          <Button variant="secondary" disabled={loading}>
             <Link href={`/bonsais/${bonsaiId}/entries`}>
               <PlusIcon className="w-4 h-4" />
             </Link>
