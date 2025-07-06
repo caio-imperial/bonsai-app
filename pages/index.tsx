@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useBonsais } from "@/hooks/useBonsais";
+import { useSearch } from "@/hooks/useSearch";
+
 
 type Bonsai = {
   _id: string;
@@ -15,23 +18,8 @@ type Bonsai = {
 };
 
 export default function Home() {
-  const [bonsais, setBonsais] = useState<Bonsai[]>([]);
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch("/api/bonsais")
-      .then((res) => res.json())
-      .then((data) => {
-        setBonsais(data);
-        setLoading(false);
-      });
-  }, []);
-
-  const matchingBonsais = bonsais.filter((bonsai) =>
-    bonsai.name && bonsai.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const { bonsais, loading } = useBonsais();
+  const { search, setSearch, filtered } = useSearch(bonsais);
 
   return (
     <main className="w-full flex flex-col gap-4 mt-8">
@@ -71,7 +59,7 @@ export default function Home() {
             <p className="text-center text-sm text-muted-foreground">Você ainda não tem nenhum bonsai cadastrado 😢</p>
         ) : (
           <>
-            {matchingBonsais.map((bonsai) => (
+            {filtered.map((bonsai) => (
               <Link
                 href={`/bonsais/${bonsai._id}`}
                 key={bonsai._id}
