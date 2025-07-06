@@ -53,7 +53,7 @@ export default async function handler(
 
       const image = files.image as File | undefined;
       if (!image || (Array.isArray(image) && image.length === 0)) {
-        return res.status(400).json({ error: "Imagem inválida" });
+        return res.status(400).json({ error: "Imagem inválida", message: "Para registrar um registro, é necessário informar uma imagem" });
       }
 
       const fileToUpload = Array.isArray(image) ? image[0] : image;
