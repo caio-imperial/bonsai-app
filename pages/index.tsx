@@ -9,17 +9,13 @@ import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBonsais } from "@/hooks/useBonsais";
 import { useSearch } from "@/hooks/useSearch";
-
-
-type Bonsai = {
-  _id: string;
-  name: string;
-  species?: string;
-};
+import { useRouter } from "next/router";
 
 export default function Home() {
   const { bonsais, loading } = useBonsais();
   const { search, setSearch, filtered } = useSearch(bonsais);
+
+  const { push } = useRouter();
 
   return (
     <main className="w-full flex flex-col gap-4 mt-8">
@@ -57,22 +53,20 @@ export default function Home() {
         ) : (
           bonsais.length === 0 ? (
             <p className="text-center text-sm text-muted-foreground">Você ainda não tem nenhum bonsai cadastrado 😢</p>
-        ) : (
-          <>
-            {filtered.map((bonsai) => (
-              <Link
-                href={`/bonsais/${bonsai._id}`}
-                key={bonsai._id}
-              >
-                <CardBonsai 
+          ) : (
+            <>
+              {filtered.map((bonsai) => (
+                <CardBonsai
+                  key={bonsai._id}
                   name={bonsai.name}
                   species={bonsai.species}
                   bonsaiId={bonsai._id}
+                  className="cursor-pointer"
+                  onClick={() => push(`/bonsais/${bonsai._id}`)}
                 />
-              </Link>
-            ))}
-          </>
-        ))}
+              ))}
+            </>
+          ))}
       </div>
     </main>
   );
