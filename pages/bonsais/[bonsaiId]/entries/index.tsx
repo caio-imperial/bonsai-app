@@ -50,7 +50,7 @@ export default function NewEntry() {
 
   return (
     <div className="flex flex-col gap-5 mt-5">
-      <Link href="/">
+      <Link href={`/bonsais/${bonsaiId}`}>
         <ArrowLeftIcon className="w-6 h-6" />
       </Link>
       <form
