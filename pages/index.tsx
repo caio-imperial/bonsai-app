@@ -11,16 +11,26 @@ import { useBonsais } from "@/hooks/useBonsais";
 import { useSearch } from "@/hooks/useSearch";
 import { useRouter } from "next/router";
 import { useDeleteBonsai } from "@/hooks/useDeleteBonsai";
+import { useConfirm } from "@/context/ConfirmContext";
 
 export default function Home() {
   const { bonsais, loading, setBonsais } = useBonsais();
   const { search, setSearch, filtered } = useSearch(bonsais);
   const { deleteBonsai } = useDeleteBonsai();
   const { push } = useRouter();
+  const { showConfirm } = useConfirm();
 
   const handleDelete = (bonsaiId: string) => {
-    deleteBonsai(bonsaiId);
-    setBonsais(bonsais.filter((bonsai) => bonsai._id !== bonsaiId));
+    showConfirm({
+      title: "Tem certeza que deseja deletar este bonsai?",
+      message: "Essa ação não poderá ser desfeita.",
+      confirmText: "Deletar",
+      cancelText: "Cancelar",
+      onConfirm: () => {
+        deleteBonsai(bonsaiId);
+        setBonsais(bonsais.filter((bonsai) => bonsai._id !== bonsaiId));
+      }
+    });
   }
 
   const handleEdit = useCallback((bonsaiId: string) => {
