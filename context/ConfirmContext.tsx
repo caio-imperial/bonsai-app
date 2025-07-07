@@ -20,36 +20,40 @@ export function useConfirm() {
   return context
 }
 
-import ConfirmModal from '@/components/ConfirmModal'
+import { DialogConfirm } from '@/components/DialogConfirm'
 
 export function ConfirmProvider({ children }: { children: ReactNode }) {
-  const [visible, setVisible] = useState(false)
   const [options, setOptions] = useState<ConfirmOptions>({
     title: '',
     message: '',
     onConfirm: () => {}
   })
+  const [open, setOpen] = useState(false)
+
 
   const showConfirm = (opts: ConfirmOptions) => {
     setOptions(opts)
-    setVisible(true)
+    setOpen(true)
   }
 
-  const handleClose = () => setVisible(false)
+  const handleConfirm = () => {
+    options.onConfirm()
+    setOpen(false)
+  }
+
+  const handleClose = () => setOpen(false)
 
   return (
     <ConfirmContext.Provider value={{ showConfirm }}>
       {children}
-      <ConfirmModal
-        show={visible}
+      <DialogConfirm
+        open={open}
+        setOpen={setOpen}
         title={options.title}
         message={options.message}
         confirmText={options.confirmText}
         cancelText={options.cancelText}
-        onConfirm={() => {
-          options.onConfirm()
-          handleClose()
-        }}
+        onConfirm={handleConfirm}
         onClose={handleClose}
       />
     </ConfirmContext.Provider>
