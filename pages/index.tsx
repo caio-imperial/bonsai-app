@@ -39,6 +39,10 @@ export default function Home() {
     push(`/bonsais/${bonsaiId}/edit`);
   }, [push]);
 
+  const isBonsaiFiltered = (bonsaiId: string) => {
+    return filtered.find((filteredBonsai) => filteredBonsai._id === bonsaiId);
+  }
+
   return (
     <div className="w-full flex flex-col gap-4 mt-8">
       <div className="mb-4">
@@ -79,7 +83,7 @@ export default function Home() {
           ) : (
             <>
               {bonsais.map((bonsai) => (
-                <div key={bonsai._id} className={`${filtered.find((filteredBonsai) => filteredBonsai._id === bonsai._id) ? "block" : "hidden"}`}>
+                <div key={bonsai._id} className={`${isBonsaiFiltered(bonsai._id) ? "block" : "hidden"}`}>
                   <CardBonsai
                     bonsai={bonsai}
                     className="cursor-pointer "
