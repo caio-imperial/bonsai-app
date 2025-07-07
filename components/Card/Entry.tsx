@@ -14,7 +14,7 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { Button } from "../ui/button";
-import { ChevronsUpDown, EllipsisVertical } from "lucide-react";
+import { ChevronsUpDown, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 import { TypographyH3 } from "../ui/typography";
 import {
@@ -104,26 +104,16 @@ export function CardEntry({
             {formatDateForDisplay(dateEntry)}
           </small>
         )}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <EllipsisVertical />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="start">
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => handleDelete(entryId)}>
-                  Apagar
-              </DropdownMenuItem>
-              <Link href={`/bonsais/${bonsaiId}/entries/${entryId}/edit`}>
-                <DropdownMenuItem>
-                  Editar
-                </DropdownMenuItem>
-              </Link>
-              <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex gap-2">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href={`/bonsais/${bonsaiId}/entries/${entryId}/edit`}>
+              <Pencil />
+            </Link>
+          </Button>
+          <Button variant="ghost" size="icon" onClick={(e) => {handleDelete(entryId); e.stopPropagation()}} className="cursor-pointer">
+            <Trash />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

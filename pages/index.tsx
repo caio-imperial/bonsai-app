@@ -10,10 +10,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useBonsais } from "@/hooks/useBonsais";
 import { useSearch } from "@/hooks/useSearch";
 import { useRouter } from "next/router";
+import { useDeleteBonsai } from "@/hooks/useDeleteBonsai";
 
 export default function Home() {
-  const { bonsais, loading } = useBonsais();
+  const { bonsais, loading, setBonsais } = useBonsais();
   const { search, setSearch, filtered } = useSearch(bonsais);
+  const { deleteBonsai } = useDeleteBonsai();
+  const handleDelete = (bonsaiId: string) => {
+    deleteBonsai(bonsaiId);
+    setBonsais(bonsais.filter((bonsai) => bonsai._id !== bonsaiId));
+  }
 
   const { push } = useRouter();
 
@@ -36,6 +42,7 @@ export default function Home() {
           variant="default"
           size="icon"
           disabled={loading}
+          asChild
         >
           <Link href="/bonsais/new">
             <PlusIcon className="w-4 h-4" />
@@ -63,6 +70,7 @@ export default function Home() {
                   bonsaiId={bonsai._id}
                   className="cursor-pointer"
                   onClick={() => push(`/bonsais/${bonsai._id}`)}
+                  handleDelete={(bonsaiId) => handleDelete(bonsaiId)}
                 />
               ))}
             </>
