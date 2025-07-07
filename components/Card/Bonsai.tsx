@@ -9,32 +9,29 @@ import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
 import { Pencil, Trash } from "lucide-react";
 import { Button } from "../ui/button";
-import { useDeleteBonsai } from "@/hooks/useDeleteBonsai";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { memo } from "react";
+import { Bonsai } from "@/types/bonsai";
 
 type CardBonsaiProps = {
-  name: string;
-  species?: string;
+  bonsai: Bonsai;
   className?: string;
-  bonsaiId: string;
+  handleClick: (bonsaiId: string) => void;
   handleDelete: (bonsaiId: string) => void;
   handleEdit: (bonsaiId: string) => void;
 } & React.ComponentProps<"div">;
 
-function CardBonsai({ name, species, className, bonsaiId, handleDelete, handleEdit, ...props }: CardBonsaiProps) {
+function CardBonsai({ bonsai, className, handleDelete, handleEdit, handleClick, ...props }: CardBonsaiProps) {
   return (
-    <Card className={cn("w-full max-w-sm", className)} {...props}>
+    <Card className={cn("w-full max-w-sm", className)} {...props} onClick={(e) => {handleClick(bonsai._id); e.stopPropagation()}}>
       <CardHeader>
         <CardTitle>
-          {name}
+          {bonsai.name}
         </CardTitle>
         <CardAction>
-          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => {handleEdit(bonsaiId); e.stopPropagation()}}>
+          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => {handleEdit(bonsai._id); e.stopPropagation()}}>
             <Pencil />
           </Button>
-          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => {handleDelete(bonsaiId); e.stopPropagation()}}>
+          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => {handleDelete(bonsai._id); e.stopPropagation()}}>
             <Trash />
           </Button>
         </CardAction>
@@ -42,13 +39,11 @@ function CardBonsai({ name, species, className, bonsaiId, handleDelete, handleEd
       <CardFooter>
         <Label>
           <span>Espécie</span>
-          <span>{species}</span>
+          <span>{bonsai.species}</span>
         </Label>
       </CardFooter>
     </Card>
   )
 }
 
-const MemoCardBonsai = memo(CardBonsai);
-
-export { MemoCardBonsai };
+export default memo(CardBonsai);

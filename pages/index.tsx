@@ -1,7 +1,7 @@
 // pages/index.tsx
 import { useCallback } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
-import { MemoCardBonsai } from "@/components/Card/Bonsai";
+import CardBonsai from "@/components/Card/Bonsai";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
@@ -20,7 +20,7 @@ export default function Home() {
   const { push } = useRouter();
   const { showConfirm } = useConfirm();
 
-  const handleDelete = (bonsaiId: string) => {
+  const handleDelete = useCallback((bonsaiId: string) => {
     showConfirm({
       title: "Tem certeza que deseja deletar este bonsai?",
       message: "Essa ação não poderá ser desfeita.",
@@ -31,7 +31,9 @@ export default function Home() {
         setBonsais(bonsais.filter((bonsai) => bonsai._id !== bonsaiId));
       }
     });
-  }
+  }, [bonsais, deleteBonsai, setBonsais, showConfirm]);
+
+  const handleClick = useCallback((bonsaiId: string) => push(`/bonsais/${bonsaiId}`), [push]);
 
   const handleEdit = useCallback((bonsaiId: string) => {
     push(`/bonsais/${bonsaiId}/edit`);
@@ -77,13 +79,11 @@ export default function Home() {
           ) : (
             <>
               {filtered.map((bonsai) => (
-                <MemoCardBonsai
+                <CardBonsai
                   key={bonsai._id}
-                  name={bonsai.name}
-                  species={bonsai.species}
-                  bonsaiId={bonsai._id}
+                  bonsai={bonsai}
                   className="cursor-pointer"
-                  onClick={() => push(`/bonsais/${bonsai._id}`)}
+                  handleClick={handleClick}
                   handleDelete={handleDelete}
                   handleEdit={handleEdit}
                 />
