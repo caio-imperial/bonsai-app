@@ -20,7 +20,7 @@ type CardBonsaiProps = {
 } & React.ComponentProps<"div">;
 
 export function CardBonsai({ name, species, className, bonsaiId, ...props }: CardBonsaiProps) {
-  const { deleteBonsai, loading, error } = useDeleteBonsai();
+  const { deleteBonsai } = useDeleteBonsai();
 
   const handleDelete = (bonsaiId: string) => {
     deleteBonsai(bonsaiId);
