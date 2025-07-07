@@ -1,7 +1,7 @@
 // pages/index.tsx
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
-import { CardBonsai } from "@/components/Card/Bonsai";
+import { MemoCardBonsai } from "@/components/Card/Bonsai";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
@@ -16,12 +16,16 @@ export default function Home() {
   const { bonsais, loading, setBonsais } = useBonsais();
   const { search, setSearch, filtered } = useSearch(bonsais);
   const { deleteBonsai } = useDeleteBonsai();
+  const { push } = useRouter();
+
   const handleDelete = (bonsaiId: string) => {
     deleteBonsai(bonsaiId);
     setBonsais(bonsais.filter((bonsai) => bonsai._id !== bonsaiId));
   }
 
-  const { push } = useRouter();
+  const handleEdit = useCallback((bonsaiId: string) => {
+    push(`/bonsais/${bonsaiId}/edit`);
+  }, [push]);
 
   return (
     <main className="w-full flex flex-col gap-4 mt-8">
@@ -63,14 +67,15 @@ export default function Home() {
           ) : (
             <>
               {filtered.map((bonsai) => (
-                <CardBonsai
+                <MemoCardBonsai
                   key={bonsai._id}
                   name={bonsai.name}
                   species={bonsai.species}
                   bonsaiId={bonsai._id}
                   className="cursor-pointer"
                   onClick={() => push(`/bonsais/${bonsai._id}`)}
-                  handleDelete={(bonsaiId) => handleDelete(bonsaiId)}
+                  handleDelete={handleDelete}
+                  handleEdit={handleEdit}
                 />
               ))}
             </>

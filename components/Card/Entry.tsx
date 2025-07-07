@@ -14,20 +14,12 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { Button } from "../ui/button";
-import { ChevronsUpDown, EllipsisVertical, Pencil, Trash } from "lucide-react";
-import { useState } from "react";
+import { ChevronsUpDown, Pencil, Trash } from "lucide-react";
+import { memo, useState } from "react";
 import { TypographyH3 } from "../ui/typography";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import Link from "next/link";
 
-export function CardEntry({
+function CardEntry({
   bonsaiId,
   entryId,
   title,
@@ -118,3 +110,7 @@ export function CardEntry({
     </Card>
   );
 }
+
+const MemoCardEntry = memo(CardEntry);
+
+export { MemoCardEntry };

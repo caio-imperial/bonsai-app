@@ -11,6 +11,8 @@ import { Pencil, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDeleteBonsai } from "@/hooks/useDeleteBonsai";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { memo } from "react";
 
 type CardBonsaiProps = {
   name: string;
@@ -18,9 +20,10 @@ type CardBonsaiProps = {
   className?: string;
   bonsaiId: string;
   handleDelete: (bonsaiId: string) => void;
+  handleEdit: (bonsaiId: string) => void;
 } & React.ComponentProps<"div">;
 
-export function CardBonsai({ name, species, className, bonsaiId, handleDelete, ...props }: CardBonsaiProps) {
+function CardBonsai({ name, species, className, bonsaiId, handleDelete, handleEdit, ...props }: CardBonsaiProps) {
   return (
     <Card className={cn("w-full max-w-sm", className)} {...props}>
       <CardHeader>
@@ -28,11 +31,9 @@ export function CardBonsai({ name, species, className, bonsaiId, handleDelete, .
           {name}
         </CardTitle>
         <CardAction>
-          <Link href={`/bonsais/${bonsaiId}/edit`}>
-            <Button variant="ghost" size="icon" className="cursor-pointer">
-              <Pencil />
-            </Button>
-          </Link>
+          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => {handleEdit(bonsaiId); e.stopPropagation()}}>
+            <Pencil />
+          </Button>
           <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => {handleDelete(bonsaiId); e.stopPropagation()}}>
             <Trash />
           </Button>
@@ -47,3 +48,7 @@ export function CardBonsai({ name, species, className, bonsaiId, handleDelete, .
     </Card>
   )
 }
+
+const MemoCardBonsai = memo(CardBonsai);
+
+export { MemoCardBonsai };
