@@ -99,7 +99,7 @@ export default function EditEntry() {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <Label htmlFor="dateEntry">Data</Label>
+            <Label>Data de registro</Label>
             <DatePickerWithTime initialDate={dateEntry} onDateChange={(date) => {
               if (date?.toISOString() !== entry.dateEntry.toISOString()) {
                 handleChange({ target: { name: 'dateEntry', value: date } } as unknown as React.ChangeEvent<HTMLInputElement>)

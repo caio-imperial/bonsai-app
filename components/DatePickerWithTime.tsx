@@ -32,7 +32,7 @@ export function DatePickerWithTime( { initialDate, onDateChange }: { initialDate
     <div className="flex gap-4">
       <div className="flex flex-col gap-3">
         <Label htmlFor="date-picker" className="px-1">
-          Date
+          Data
         </Label>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
@@ -60,7 +60,7 @@ export function DatePickerWithTime( { initialDate, onDateChange }: { initialDate
       </div>
       <div className="flex flex-col gap-3">
         <Label htmlFor="time-picker" className="px-1">
-          Time
+          Hora
         </Label>
         <Input
           type="time"
