@@ -10,6 +10,8 @@ import { useEntry } from "@/hooks/useEntry";
 import { useDeleteEntry } from "@/hooks/useDeleteEntry";
 import { toast } from "sonner";
 import { useBonsai } from "@/hooks/useBonsai";
+import { useConfirm } from "@/context/ConfirmContext";
+import { useCallback } from "react";
 
 export default function TimelinePage() {
   const router = useRouter();
@@ -18,13 +20,27 @@ export default function TimelinePage() {
   const { entries, loading: entriesLoading, setEntries } = useEntry(bonsaiId as string | undefined);
   const { bonsai, loading: bonsaiLoading } = useBonsai(bonsaiId as string | undefined);
   const { deleteEntry, error } = useDeleteEntry();
+  const { showConfirm } = useConfirm();
 
-  const handleDelete = (id: string) => {
-    if (!entries) return;
-    deleteEntry(bonsaiId as string, id);
-    if (error) toast.error(error);
-    else toast.success("Registro deletado com sucesso!");
-    setEntries(entries?.filter((entry) => entry?._id !== id) || []);
+  const handleDelete = useCallback((id: string) => {
+    showConfirm({
+      title: "Tem certeza que deseja deletar este registro?",
+      message: "Essa ação não poderá ser desfeita.",
+      onConfirm: () => {
+        deleteEntry(bonsaiId as string, id);
+        if (error) toast.error(error);
+        else toast.success("Registro deletado com sucesso!");
+        setEntries(entries?.filter((entry) => entry?._id !== id) || []);
+      }
+    });
+  }, [bonsaiId, deleteEntry, error, setEntries, showConfirm]);
+
+  const handleEdit = () => {
+    router.push(`/bonsais/${bonsaiId}/edit`);
+  };
+
+  const handleAddEntry = () => {
+    router.push(`/bonsais/${bonsaiId}/entries`);
   };
 
   return (
@@ -51,15 +67,11 @@ export default function TimelinePage() {
           )}
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" disabled={entriesLoading}>
-            <Link href={`/bonsais/${bonsaiId}/edit`} className="flex items-center gap-2">
-              <PencilIcon className="w-4 h-4" /> Editar
-            </Link>
+          <Button variant="secondary" disabled={entriesLoading} onClick={handleEdit}>
+            <PencilIcon className="w-4 h-4" /> Editar
           </Button>
-          <Button variant="secondary" disabled={entriesLoading}>
-            <Link href={`/bonsais/${bonsaiId}/entries`}>
-              <PlusIcon className="w-4 h-4" />
-            </Link>
+          <Button variant="secondary" disabled={entriesLoading} onClick={handleAddEntry}>
+            <PlusIcon className="w-4 h-4" />
           </Button>
         </div>
       </div>
@@ -67,7 +79,7 @@ export default function TimelinePage() {
         <>
           <Skeleton className="w-full h-96" />
         </>
-      ) :  entries && entries.length === 0 ? (
+      ) : entries && entries.length === 0 ? (
         <TypographyH1>Nenhum registro ainda 😢</TypographyH1>
       ) : (
         <Timeline
