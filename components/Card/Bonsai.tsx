@@ -12,7 +12,14 @@ import { Button } from "../ui/button";
 import { useDeleteBonsai } from "@/hooks/useDeleteBonsai";
 import Link from "next/link";
 
-export function CardBonsai({ name, species, className, bonsaiId }: { name: string, species?: string, className?: string, bonsaiId: string }) {
+type CardBonsaiProps = {
+  name: string;
+  species?: string;
+  className?: string;
+  bonsaiId: string;
+} & React.ComponentProps<"div">;
+
+export function CardBonsai({ name, species, className, bonsaiId, ...props }: CardBonsaiProps) {
   const { deleteBonsai, loading, error } = useDeleteBonsai();
 
   const handleDelete = (bonsaiId: string) => {
@@ -20,17 +27,17 @@ export function CardBonsai({ name, species, className, bonsaiId }: { name: strin
   }
 
   return (
-    <Card className={cn("w-full max-w-sm", className)}>
+    <Card className={cn("w-full max-w-sm", className)} {...props}>
       <CardHeader>
         <CardTitle>
           {name}
         </CardTitle>
         <CardAction>
-          <Button variant="ghost" size="icon" className="cursor-pointer" asChild>
-            <Link href={`/bonsais/${bonsaiId}/edit`}>
+          <Link href={`/bonsais/${bonsaiId}/edit`}>
+            <Button variant="ghost" size="icon" className="cursor-pointer">
               <Pencil />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <Button variant="ghost" size="icon" className="cursor-pointer" onClick={() => handleDelete(bonsaiId)}>
             <Trash />
           </Button>
