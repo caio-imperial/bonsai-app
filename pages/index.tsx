@@ -40,7 +40,7 @@ export default function Home() {
   }, [push]);
 
   return (
-    <main className="w-full flex flex-col gap-4 mt-8">
+    <div className="w-full flex flex-col gap-4 mt-8">
       <div className="mb-4">
         <TypographyH1>🌱 Meus Bonsais</TypographyH1>
       </div>
@@ -78,19 +78,20 @@ export default function Home() {
             <p className="text-center text-sm text-muted-foreground">Você ainda não tem nenhum bonsai cadastrado 😢</p>
           ) : (
             <>
-              {filtered.map((bonsai) => (
-                <CardBonsai
-                  key={bonsai._id}
-                  bonsai={bonsai}
-                  className="cursor-pointer"
-                  handleClick={handleClick}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                />
+              {bonsais.map((bonsai) => (
+                <div key={bonsai._id} className={`${filtered.find((filteredBonsai) => filteredBonsai._id === bonsai._id) ? "block" : "hidden"}`}>
+                  <CardBonsai
+                    bonsai={bonsai}
+                    className="cursor-pointer "
+                    handleClick={handleClick}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                    />
+                </div>
               ))}
             </>
           ))}
       </div>
-    </main>
+    </div>
   );
 }
