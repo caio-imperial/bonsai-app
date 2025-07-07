@@ -17,15 +17,10 @@ type CardBonsaiProps = {
   species?: string;
   className?: string;
   bonsaiId: string;
+  handleDelete: (bonsaiId: string) => void;
 } & React.ComponentProps<"div">;
 
-export function CardBonsai({ name, species, className, bonsaiId, ...props }: CardBonsaiProps) {
-  const { deleteBonsai } = useDeleteBonsai();
-
-  const handleDelete = (bonsaiId: string) => {
-    deleteBonsai(bonsaiId);
-  }
-
+export function CardBonsai({ name, species, className, bonsaiId, handleDelete, ...props }: CardBonsaiProps) {
   return (
     <Card className={cn("w-full max-w-sm", className)} {...props}>
       <CardHeader>
@@ -38,7 +33,7 @@ export function CardBonsai({ name, species, className, bonsaiId, ...props }: Car
               <Pencil />
             </Button>
           </Link>
-          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={() => handleDelete(bonsaiId)}>
+          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => {handleDelete(bonsaiId); e.stopPropagation()}}>
             <Trash />
           </Button>
         </CardAction>
