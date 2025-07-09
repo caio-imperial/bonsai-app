@@ -7,3 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const normalizeString = (str: string) =>
   str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+
+export const sanitizeInput = (input: string) => {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};

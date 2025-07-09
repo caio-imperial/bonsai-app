@@ -4,7 +4,7 @@ import Link from "next/link";
 import Timeline from "@/components/Timeline";
 import { Button } from "@/components/ui/button";
 import { TypographyH3, TypographyMuted, TypographyH1 } from "@/components/ui/typography";
-import { ArrowLeftIcon, PencilIcon, PlusIcon } from "lucide-react";
+import { ArrowLeftIcon, PencilIcon, PlusIcon, StarHalfIcon, StarIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEntry } from "@/hooks/useEntry";
 import { useDeleteEntry } from "@/hooks/useDeleteEntry";
@@ -12,13 +12,15 @@ import { toast } from "sonner";
 import { useBonsai } from "@/hooks/useBonsai";
 import { useConfirm } from "@/context/ConfirmContext";
 import { useCallback } from "react";
+import { useUpdateBonsai } from "@/hooks/useUpdateBonsai";
 
 export default function TimelinePage() {
   const router = useRouter();
   const { bonsaiId } = router.query;
 
   const { entries, loading: entriesLoading, setEntries } = useEntry(bonsaiId as string | undefined);
-  const { bonsai, loading: bonsaiLoading } = useBonsai(bonsaiId as string | undefined);
+  const { bonsai, loading: bonsaiLoading, setBonsai } = useBonsai(bonsaiId as string | undefined);
+  const { updateBonsai } = useUpdateBonsai();
   const { deleteEntry, error } = useDeleteEntry();
   const { showConfirm } = useConfirm();
 
@@ -41,6 +43,12 @@ export default function TimelinePage() {
 
   const handleAddEntry = () => {
     router.push(`/bonsais/${bonsaiId}/entries`);
+  };
+
+  const handleFavorite = () => {
+    if (!bonsai) return;
+    updateBonsai({ _id: bonsai._id, favorite: !bonsai.favorite });
+    setBonsai({ ...bonsai, favorite: !bonsai.favorite });
   };
 
   return (
@@ -67,10 +75,13 @@ export default function TimelinePage() {
           )}
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" disabled={entriesLoading} onClick={handleEdit}>
+          <Button variant="secondary" disabled={entriesLoading} onClick={handleFavorite} className="cursor-pointer">
+            {bonsai?.favorite ? <StarIcon className="w-4 h-4" /> : <StarHalfIcon className="w-4 h-4" />}
+          </Button>
+          <Button variant="secondary" disabled={entriesLoading} onClick={handleEdit} className="cursor-pointer">
             <PencilIcon className="w-4 h-4" /> Editar
           </Button>
-          <Button variant="secondary" disabled={entriesLoading} onClick={handleAddEntry}>
+          <Button variant="secondary" disabled={entriesLoading} onClick={handleAddEntry} className="cursor-pointer">
             <PlusIcon className="w-4 h-4" />
           </Button>
         </div>

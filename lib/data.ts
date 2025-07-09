@@ -1,16 +1,38 @@
 // lib/data.ts
 import clientPromise from "@/lib/mongodb";
-import { Bonsai, Entry } from "@/types";
+import { Bonsai, CreateBonsai, Entry } from "@/types";
 import { ObjectId } from "mongodb";
+import { normalizeString, sanitizeInput } from "./utils";
 
-// 🪴 Buscar todos os bonsais
-export async function getBonsais() {
+export async function getBonsaisCount({ search }: { search: string }) {
   const client = await clientPromise;
   const db = client.db("bonsais");
+  const searchRegex = new RegExp(sanitizeInput(search), "i");
+  const total = await db.collection("bonsais").countDocuments({
+    $or: [
+      { name: { $regex: searchRegex } },
+    ],
+  });
+  return total;
+}
+
+// 🪴 Buscar todos os bonsais
+export async function getBonsais({ page, limit, search }: { page: number, limit: number, search: string }) {
+  const skip = (page - 1) * limit
+  const client = await clientPromise;
+  const db = client.db("bonsais");
+  const searchRegex = new RegExp(sanitizeInput(search), "i");
   const bonsais = await db
     .collection("bonsais")
-    .find()
+    .find({
+      $or: [
+        { name: { $regex: searchRegex } },
+      ],
+    })
+    .collation({ locale: "pt", strength: 1 })
     .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
     .toArray();
   return bonsais;
 }
@@ -18,13 +40,18 @@ export async function getBonsais() {
 // 🪴 Criar um novo bonsai
 export async function createBonsai({
   name,
-  species,
-}: Omit<Bonsai, "_id" | "createdAt">) {
+  species = "",
+  favorite = false,
+}: CreateBonsai) {
+  if (!name) {
+    throw new Error("Nome é obrigatório");
+  }
   const client = await clientPromise;
   const db = client.db("bonsais");
-  const newBonsai = {
+  const newBonsai: Omit<Bonsai, "_id"> = {
     name,
-    species: species || "",
+    species: species,
+    favorite: favorite,
     createdAt: new Date(),
   };
   const result = await db.collection("bonsais").insertOne(newBonsai);
@@ -90,13 +117,18 @@ export async function createEntry({
 // 📸 Atualizar um bonsai
 export async function updateBonsai(
   bonsaiId: string,
-  { name, species }: Partial<Bonsai>
+  { name, species, favorite }: Partial<Bonsai>
 ) {
   const client = await clientPromise;
   const db = client.db("bonsais");
+  const updateData = {
+    ...(name && { name }),
+    ...(species && { species }),
+    ...(favorite !== undefined && { favorite }),
+  };
   await db
     .collection("bonsais")
-    .updateOne({ _id: new ObjectId(bonsaiId) }, { $set: { name, species } });
+    .updateOne({ _id: new ObjectId(bonsaiId) }, { $set: updateData });
 }
 
 // 📸 Atualizar um registro com imagem
@@ -127,7 +159,7 @@ export async function updateEntry({
     ...(notes && { notes }),
     ...(dateEntry && { dateEntry: new Date(dateEntry) }),
   };
-  console.log('updateData', updateData)
+
   await db
     .collection("entries")
     .updateOne({ _id: new ObjectId(_id) }, { $set: updateData });

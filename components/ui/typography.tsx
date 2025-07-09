@@ -1,22 +1,24 @@
-export function TypographyH1({ children }: { children: React.ReactNode }) {
+import { cn } from "@/lib/utils";
+
+export function TypographyH1({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+    <h1 className={cn("scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance", className)}>
       {children}
     </h1>
   );
 }
 
-export function TypographyH3({ children }: { children: React.ReactNode }) {
+export function TypographyH3({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+    <h3 className={cn("scroll-m-20 text-2xl font-semibold tracking-tight", className)}>
       {children}
     </h3>
   )
 }
 
-export function TypographyMuted({ children }: { children: React.ReactNode }) {
+export function TypographyMuted({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <p className="text-muted-foreground text-sm">
+    <p className={cn("text-muted-foreground text-sm", className)}>
       {children}
     </p>
   );

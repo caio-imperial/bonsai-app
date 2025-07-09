@@ -1,6 +1,6 @@
 // pages/index.tsx
-import { useCallback } from "react";
-import { TypographyH1 } from "@/components/ui/typography";
+import { useCallback, useState } from "react";
+import { TypographyH1, TypographyH3 } from "@/components/ui/typography";
 import CardBonsai from "@/components/Card/Bonsai";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,17 +8,38 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBonsais } from "@/hooks/useBonsais";
-import { useSearch } from "@/hooks/useSearch";
 import { useRouter } from "next/router";
 import { useDeleteBonsai } from "@/hooks/useDeleteBonsai";
 import { useConfirm } from "@/context/ConfirmContext";
-
+import { useUpdateBonsai } from "@/hooks/useUpdateBonsai";
+import { useDebounce } from "@/hooks/useDebounce";
+import { BonsaiPagination } from "@/components/Bonsai/components/pagination";
 export default function Home() {
-  const { bonsais, loading, setBonsais } = useBonsais();
-  const { search, setSearch, filtered } = useSearch(bonsais);
+  const { bonsais, loading, setBonsais, params, setParams, meta } = useBonsais({
+    initialParams: {
+      limit: 9,
+    }
+  });
+  const [search, setSearch] = useState("");
   const { deleteBonsai } = useDeleteBonsai();
+  const { updateBonsai } = useUpdateBonsai();
   const { push } = useRouter();
   const { showConfirm } = useConfirm();
+
+  const initLoading = loading && params.search.length === 0;
+
+  const debouncedFetchBonsais = useDebounce((search: string) => {
+    setParams(prevParams => ({ ...prevParams, search }));
+  }, 500);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    debouncedFetchBonsais(e.target.value);
+  };
+
+  const handlePageChange = (page: number) => {
+    setParams(prevParams => ({ ...prevParams, page }));
+  };
 
   const handleDelete = useCallback((bonsaiId: string) => {
     showConfirm({
@@ -28,10 +49,10 @@ export default function Home() {
       cancelText: "Cancelar",
       onConfirm: () => {
         deleteBonsai(bonsaiId);
-        setBonsais(bonsais.filter((bonsai) => bonsai._id !== bonsaiId));
+        setBonsais(prevBonsais => prevBonsais.filter((bonsai) => bonsai._id !== bonsaiId));
       }
     });
-  }, [bonsais, deleteBonsai, setBonsais, showConfirm]);
+  }, [deleteBonsai, setBonsais, showConfirm]);
 
   const handleClick = useCallback((bonsaiId: string) => push(`/bonsais/${bonsaiId}`), [push]);
 
@@ -39,29 +60,35 @@ export default function Home() {
     push(`/bonsais/${bonsaiId}/edit`);
   }, [push]);
 
-  const isBonsaiFiltered = (bonsaiId: string) => {
-    return filtered.find((filteredBonsai) => filteredBonsai._id === bonsaiId);
-  }
+  const handleFavorite = useCallback(({ _id, favorite }: { _id: string, favorite: boolean }) => {
+    updateBonsai({ _id, favorite });
+    setBonsais(prevBonsais => {
+      const newBonsais = prevBonsais.map(
+        (bonsai) => bonsai._id === _id ? { ...bonsai, favorite } : bonsai
+      );
+      return newBonsais;
+    });
+  }, [updateBonsai, setBonsais]);
 
   return (
-    <div className="w-full flex flex-col gap-4 mt-8">
-      <div className="mb-4">
+    <div className="h-screen w-full flex flex-col gap-4 md:gap-2 justify-start items-center">
+      <div className="mt-4">
         <TypographyH1>🌱 Meus Bonsais</TypographyH1>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 w-full max-w-[1000px]">
         <Input
           type="text"
           placeholder="Nome do bonsai"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          disabled={loading}
+          onChange={handleSearch}
+          disabled={initLoading}
         />
         <Button
           className="cursor-pointer hover:bg-primary/90"
           variant="default"
           size="icon"
-          disabled={loading}
+          disabled={initLoading}
           asChild
         >
           <Link href="/bonsais/new">
@@ -70,32 +97,44 @@ export default function Home() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 animate-in fade-in-0 duration-300">
+      <div className="grow flex flex-col gap-4 items-between justify-between">
         {loading ? (
           <>
             {Array.from({ length: 4 }).map((_, index) => (
               <Skeleton key={index} className="w-full h-27" />
             ))}
           </>
-        ) : (
-          bonsais.length === 0 ? (
-            <p className="text-center text-sm text-muted-foreground">Você ainda não tem nenhum bonsai cadastrado 😢</p>
+        ) :
+          search.length > 0 && bonsais.length === 0 ? (
+            <TypographyH3 className="col-span-full text-center mt-10">Nenhum bonsai encontrado</TypographyH3>
           ) : (
-            <>
-              {bonsais.map((bonsai) => (
-                <div key={bonsai._id} className={`${isBonsaiFiltered(bonsai._id) ? "block" : "hidden"}`}>
-                  <CardBonsai
-                    bonsai={bonsai}
-                    className="cursor-pointer "
-                    handleClick={handleClick}
-                    handleDelete={handleDelete}
-                    handleEdit={handleEdit}
+            bonsais.length === 0 ? (
+              <TypographyH3 className="col-span-full text-center mt-10">Você ainda não tem nenhum bonsai cadastrado</TypographyH3>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 animate-in fade-in-0 duration-300">
+                {bonsais.map((bonsai) => {
+                  return (
+                    <CardBonsai
+                      key={bonsai._id}
+                      bonsai={bonsai}
+                      className="cursor-pointer "
+                      handleClick={handleClick}
+                      handleDelete={handleDelete}
+                      handleEdit={handleEdit}
+                      handleFavorite={handleFavorite}
                     />
-                </div>
-              ))}
-            </>
-          ))}
+                  );
+                })}
+              </div>
+            ))}
       </div>
+            {bonsais.length !== 0 ? (
+              <BonsaiPagination
+                totalPages={meta.totalPages}
+                currentPage={params.page}
+                onPageChange={handlePageChange}
+              />
+            ) : null}
     </div>
   );
 }

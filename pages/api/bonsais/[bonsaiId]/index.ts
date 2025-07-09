@@ -17,9 +17,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   else if (req.method === 'PATCH') {
     const { bonsaiId } = req.query
-    const { name, species } = req.body
+    const { name, species, favorite } = req.body
+
     try {
-      await updateBonsai(bonsaiId as string, { name, species })
+      await updateBonsai(bonsaiId as string, { name, species, favorite })
       res.status(204).end()
     } catch {
       res.status(400).json({ error: 'Erro inesperado', message: "Falha ao atualizar bonsai" })
