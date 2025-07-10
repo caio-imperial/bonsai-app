@@ -14,7 +14,7 @@ interface BonsaiPaginationProps {
     onPageChange: (page: number) => void
 }
 
-export function BonsaiPagination({ totalPages, currentPage, onPageChange }: BonsaiPaginationProps) {
+function BonsaiPagination({ totalPages, currentPage, onPageChange }: BonsaiPaginationProps) {
     const pagesNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
     const displayPages = [];
 
@@ -70,3 +70,5 @@ export function BonsaiPagination({ totalPages, currentPage, onPageChange }: Bons
         </Pagination>
     )
 }
+
+export default BonsaiPagination;

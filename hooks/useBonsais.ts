@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Bonsai, BonsaisResponse } from "@/types/bonsai"
 
-interface UseBonsaisProps {
+export interface UseBonsaisProps {
   initialParams?: {
     search?: string,
     page?: number,

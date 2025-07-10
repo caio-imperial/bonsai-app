@@ -5,10 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Label } from "../ui/label";
+import { Label } from "../../../components/ui/label";
 import { cn } from "@/lib/utils";
 import { Pencil, Star, StarHalf, Trash } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../../components/ui/button";
 import { memo } from "react";
 import { Bonsai } from "@/types/bonsai";
 
@@ -21,7 +21,7 @@ type CardBonsaiProps = {
   handleFavorite: (bonsai: { _id: string, favorite: boolean }) => void;
 } & React.ComponentProps<"div">;
 
-function CardBonsai({ bonsai, className, handleDelete, handleEdit, handleClick, handleFavorite, ...props }: CardBonsaiProps) {
+function BonsaiCard({ bonsai, className, handleDelete, handleEdit, handleClick, handleFavorite, ...props }: CardBonsaiProps) {
   console.log('bonsai ', bonsai.name)
   return (
     <Card className={cn("w-full max-w-sm", className)} {...props} onClick={(e) => { handleClick(bonsai._id); e.stopPropagation() }}>
@@ -30,7 +30,7 @@ function CardBonsai({ bonsai, className, handleDelete, handleEdit, handleClick, 
           {bonsai.name}
         </CardTitle>
         <CardAction>
-          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => { handleFavorite({ _id:bonsai._id, favorite: !bonsai.favorite }); e.stopPropagation() }}>
+          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => { handleFavorite({ _id:bonsai._id, favorite: bonsai.favorite }); e.stopPropagation() }}>
             {bonsai.favorite ? <Star /> : <StarHalf />}
           </Button>
         </CardAction>
@@ -53,4 +53,4 @@ function CardBonsai({ bonsai, className, handleDelete, handleEdit, handleClick, 
   )
 }
 
-export default memo(CardBonsai);
+export default memo(BonsaiCard);
