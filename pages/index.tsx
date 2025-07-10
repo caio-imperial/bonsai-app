@@ -1,7 +1,7 @@
-import BonsaiView from "@/features/Bonsai/BonsaiView";
+import BonsaisView from "@/features/Bonsais/BonsaisView";
 
 export default function Home() {
   return (
-    <BonsaiView />
+    <BonsaisView />
   );
 }

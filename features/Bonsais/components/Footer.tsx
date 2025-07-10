@@ -1,8 +1,8 @@
-import BonsaiPagination from "@/features/Bonsai/components/Pagination";
+import BonsaisPagination from "@/features/Bonsais/components/Pagination";
 
 import { BonsaisResponse } from "@/types/bonsai";
 
-interface BonsaiFooterProps {
+interface BonsaisFooterProps {
   meta: BonsaisResponse["meta"];
   params: {
     page: number;
@@ -11,11 +11,11 @@ interface BonsaiFooterProps {
   handlePageChange: (page: number) => void;
 }
 
-const BonsaiFooter = ({ meta, params, handlePageChange }: BonsaiFooterProps) => {
+const BonsaisFooter = ({ meta, params, handlePageChange }: BonsaisFooterProps) => {
   if (meta.totalPages <= 1) return null;
 
   return (
-    <BonsaiPagination
+    <BonsaisPagination
       totalPages={meta.totalPages || 0}
       currentPage={params.page}
       onPageChange={handlePageChange}
@@ -23,4 +23,4 @@ const BonsaiFooter = ({ meta, params, handlePageChange }: BonsaiFooterProps) => 
   );
 };
 
-export default BonsaiFooter;
+export default BonsaisFooter;

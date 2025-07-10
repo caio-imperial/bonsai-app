@@ -4,13 +4,13 @@ import { PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-interface BonsaiSearchProps {
+interface BonsaisSearchProps {
     search: string;
     handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
     loading: boolean;
 }
 
-const BonsaiSearch = ({ search, handleSearch, loading }: BonsaiSearchProps) => {
+const BonsaisSearch = ({ search, handleSearch, loading }: BonsaisSearchProps) => {
     const initLoading = loading && search.length === 0;
 
     return (
@@ -37,4 +37,4 @@ const BonsaiSearch = ({ search, handleSearch, loading }: BonsaiSearchProps) => {
     );
 };
 
-export default BonsaiSearch;
+export default BonsaisSearch;

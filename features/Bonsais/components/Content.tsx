@@ -1,9 +1,9 @@
 import { Bonsai } from "@/types/bonsai";
-import BonsaiContentLoading from "./ContentLoading";
-import BonsaiContentEmpty from "./ContentEmpty";
-import BonsaiCard from "./Card";
+import BonsaisContentLoading from "./ContentLoading";
+import BonsaisContentEmpty from "./ContentEmpty";
+import BonsaisCard from "./Card";
 
-interface BonsaiContentProps {
+interface BonsaisContentProps {
     loading: boolean;
     search: string;
     bonsais: Bonsai[];
@@ -13,18 +13,18 @@ interface BonsaiContentProps {
     handleFavorite: ({ _id, favorite }: { _id: string, favorite: boolean }) => void;
 }
 
-const BonsaiContent = ({ loading, search, bonsais, handleClick, handleDelete, handleEdit, handleFavorite }: BonsaiContentProps) => {
-    if (loading) return <BonsaiContentLoading />;
+const BonsaisContent = ({ loading, search, bonsais, handleClick, handleDelete, handleEdit, handleFavorite }: BonsaisContentProps) => {
+    if (loading) return <BonsaisContentLoading />;
 
-    if (search.length > 0 && bonsais.length === 0) return <BonsaiContentEmpty text="Nenhum bonsai encontrado" />;
+    if (search.length > 0 && bonsais.length === 0) return <BonsaisContentEmpty text="Nenhum bonsai encontrado" />;
 
-    if (bonsais.length === 0) return <BonsaiContentEmpty text="Você ainda não tem nenhum bonsai cadastrado" />;
+    if (bonsais.length === 0) return <BonsaisContentEmpty text="Você ainda não tem nenhum bonsai cadastrado" />;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 animate-in fade-in-0 duration-300">
         {bonsais.map((bonsai) => {
           return (
-            <BonsaiCard
+            <BonsaisCard
               key={bonsai._id}
               bonsai={bonsai}
               className="cursor-pointer"
@@ -39,4 +39,4 @@ const BonsaiContent = ({ loading, search, bonsais, handleClick, handleDelete, ha
     );
 };
 
-export default BonsaiContent;
+export default BonsaisContent;

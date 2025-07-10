@@ -12,7 +12,7 @@ import { Button } from "../../../components/ui/button";
 import { memo } from "react";
 import { Bonsai } from "@/types/bonsai";
 
-type CardBonsaiProps = {
+type CardBonsaisProps = {
   bonsai: Bonsai;
   className?: string;
   handleClick: (bonsaiId: string) => void;
@@ -21,7 +21,7 @@ type CardBonsaiProps = {
   handleFavorite: (bonsai: { _id: string, favorite: boolean }) => void;
 } & React.ComponentProps<"div">;
 
-function BonsaiCard({ bonsai, className, handleDelete, handleEdit, handleClick, handleFavorite, ...props }: CardBonsaiProps) {
+function BonsaisCard({ bonsai, className, handleDelete, handleEdit, handleClick, handleFavorite, ...props }: CardBonsaisProps) {
   console.log('bonsai ', bonsai.name)
   return (
     <Card className={cn("w-full max-w-sm", className)} {...props} onClick={(e) => { handleClick(bonsai._id); e.stopPropagation() }}>
@@ -53,4 +53,4 @@ function BonsaiCard({ bonsai, className, handleDelete, handleEdit, handleClick, 
   )
 }
 
-export default memo(BonsaiCard);
+export default memo(BonsaisCard);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useBonsais, UseBonsaisProps } from "@/hooks/useBonsais";
+import { useBonsais } from "@/hooks/useBonsais";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export function useSearch() {

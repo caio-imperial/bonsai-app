@@ -8,13 +8,13 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 
-interface BonsaiPaginationProps {
+interface BonsaisPaginationProps {
     totalPages: number
     currentPage: number
     onPageChange: (page: number) => void
 }
 
-function BonsaiPagination({ totalPages, currentPage, onPageChange }: BonsaiPaginationProps) {
+function BonsaisPagination({ totalPages, currentPage, onPageChange }: BonsaisPaginationProps) {
     const pagesNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
     const displayPages = [];
 
@@ -71,4 +71,4 @@ function BonsaiPagination({ totalPages, currentPage, onPageChange }: BonsaiPagin
     )
 }
 
-export default BonsaiPagination;
+export default BonsaisPagination;

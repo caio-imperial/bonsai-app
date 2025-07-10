@@ -1,11 +1,13 @@
-import BonsaiHeader from "@/features/Bonsai/components/Header";
-import BonsaiSearch from "@/features/Bonsai/components/Search";
-import { useFavorite, useDelete, useSearch, useBonsaiNavigation } from "@/features/Bonsai/hooks";
-import BonsaiFooter from "./components/Footer";
-import BonsaiContent from "./components/Content";
+import { 
+  BonsaisHeader,
+  BonsaisSearch,
+  BonsaisContent,
+  BonsaisFooter,
+} from "@/features/Bonsais/components";
+import { useFavorite, useDelete, useSearch, useBonsaiNavigation } from "@/features/Bonsais/hooks";
 
 
-function BonsaiView() {
+function BonsaisView() {
   const { search, handleSearch, bonsais, setBonsais, loading, params, meta, handlePageChange } = useSearch();
   const { toggleFavorite } = useFavorite({ setBonsais });
   const { deleteBonsai } = useDelete({ setBonsais });
@@ -14,18 +16,18 @@ function BonsaiView() {
   return (
     <div className="h-screen w-full flex flex-col gap-4 md:gap-2 justify-start items-center">
       <div className="mt-4">
-        <BonsaiHeader />
+        <BonsaisHeader />
       </div>
       <div className="flex gap-2 w-full max-w-[1000px]">
-        <BonsaiSearch
+        <BonsaisSearch
           search={search}
           handleSearch={handleSearch}
           loading={loading}
         />
       </div>
 
-      <div className="grow flex flex-col gap-4 items-between justify-between">
-        <BonsaiContent
+      <div className="grow w-full flex flex-col gap-4 items-between justify-between">
+        <BonsaisContent
           loading={loading}
           search={search}
           bonsais={bonsais}
@@ -35,7 +37,7 @@ function BonsaiView() {
           handleFavorite={toggleFavorite}
         />
       </div>
-      <BonsaiFooter
+      <BonsaisFooter
         meta={meta}
         params={params}
         handlePageChange={handlePageChange}
@@ -44,4 +46,4 @@ function BonsaiView() {
   );
 }
 
-export default BonsaiView;
+export default BonsaisView;
