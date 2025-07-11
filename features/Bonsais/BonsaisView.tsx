@@ -18,7 +18,7 @@ function BonsaisView() {
       <div className="mt-4">
         <BonsaisHeader />
       </div>
-      <div className="flex gap-2 w-full max-w-[1000px]">
+      <div className="flex gap-2 w-full">
         <BonsaisSearch
           search={search}
           handleSearch={handleSearch}
