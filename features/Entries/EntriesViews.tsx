@@ -20,9 +20,7 @@ export default function TimelinePage() {
   const { deleteEntry } = useDeleteEntry({bonsaiId: bonsaiId, setEntries});
   const { handleEdit, handleAddEntry } = useNavigation();
 
-  if (bonsaiError) return <div>{bonsaiError.message}</div>;
-
-  if (!bonsai) return <BonsaiNotFound />;
+  if ( bonsaiError || (!bonsai && !bonsaiLoading)) return <BonsaiNotFound />;
 
   return (
     <div className="flex flex-col gap-2 mt-5">

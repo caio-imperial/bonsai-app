@@ -4,12 +4,12 @@ import { Bonsai } from "@/types";
 import EntriesHeaderTitleLoading from "./TitleLoading";
 
 interface EntriesHeaderTitleProps {
-    bonsai: Bonsai;
+    bonsai: Bonsai | null;
     loading: boolean;
 }
 
 const EntriesHeaderTitle = ({ bonsai, loading }: EntriesHeaderTitleProps) => {
-    if (loading) return <EntriesHeaderTitleLoading />;
+    if (loading || !bonsai) return <EntriesHeaderTitleLoading />;
     return (
         <>
             {bonsai?.species && (

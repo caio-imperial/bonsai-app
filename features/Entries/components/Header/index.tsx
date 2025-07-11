@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
 interface EntriesHeaderProps {
-    bonsai: Bonsai;
+    bonsai: Bonsai | null;
     bonsaiLoading: boolean;
     entriesLoading: boolean;
     handleFavorite: ({bonsaiId, favorite}: {bonsaiId: string, favorite: boolean}) => void;
