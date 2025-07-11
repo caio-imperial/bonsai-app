@@ -15,16 +15,16 @@ import { Bonsai } from "@/types/bonsai";
 type CardBonsaisProps = {
   bonsai: Bonsai;
   className?: string;
-  handleClick: (bonsaiId: string) => void;
-  handleDelete: (bonsaiId: string) => void;
-  handleEdit: (bonsaiId: string) => void;
+  handleClick: ({bonsaiId}: {bonsaiId: string}) => void;
+  handleDelete: ({bonsaiId}: {bonsaiId: string}) => void;
+  handleEdit: ({bonsaiId}: {bonsaiId: string}) => void;
   handleFavorite: (bonsai: { _id: string, favorite: boolean }) => void;
 } & React.ComponentProps<"div">;
 
 function BonsaisCard({ bonsai, className, handleDelete, handleEdit, handleClick, handleFavorite, ...props }: CardBonsaisProps) {
   console.log('bonsai ', bonsai.name)
   return (
-    <Card className={cn("w-full max-w-sm", className)} {...props} onClick={(e) => { handleClick(bonsai._id); e.stopPropagation() }}>
+    <Card className={cn("w-full max-w-sm", className)} {...props} onClick={(e) => { handleClick({bonsaiId: bonsai._id}); e.stopPropagation() }}>
       <CardHeader>
         <CardTitle>
           {bonsai.name}
@@ -41,10 +41,10 @@ function BonsaisCard({ bonsai, className, handleDelete, handleEdit, handleClick,
           <span>{bonsai.species}</span>
         </Label>
         <div className="flex">
-          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => { handleEdit(bonsai._id); e.stopPropagation() }}>
+          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => { handleEdit({bonsaiId: bonsai._id}); e.stopPropagation() }}>
             <Pencil />
           </Button>
-          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => { handleDelete(bonsai._id); e.stopPropagation() }}>
+          <Button variant="ghost" size="icon" className="cursor-pointer" onClick={(e) => { handleDelete({bonsaiId: bonsai._id}); e.stopPropagation() }}>
             <Trash />
           </Button>
         </div>

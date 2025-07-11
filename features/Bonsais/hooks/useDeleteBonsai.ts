@@ -12,7 +12,7 @@ export function useDelete({ setBonsais }: useDeleteProps) {
     const { deleteBonsai: deleteBonsaiApi, loading, error } = useDeleteBonsai();
     const { showConfirm } = useConfirm();
 
-    const deleteBonsai = useCallback(async (bonsaiId: string) => {
+    const deleteBonsai = useCallback(async ({bonsaiId}: {bonsaiId: string}) => {
       showConfirm({
         title: "Tem certeza que deseja deletar este bonsai?",
         message: "Essa ação não poderá ser desfeita.",

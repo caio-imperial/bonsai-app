@@ -4,14 +4,14 @@ import {
   BonsaisContent,
   BonsaisFooter,
 } from "@/features/Bonsais/components";
-import { useFavorite, useDelete, useSearch, useBonsaiNavigation } from "@/features/Bonsais/hooks";
-
+import { useFavorite, useDelete, useSearch } from "@/features/Bonsais/hooks";
+import { useNavigation } from "@/hooks/useNavegation";
 
 function BonsaisView() {
   const { search, handleSearch, bonsais, setBonsais, loading, params, meta, handlePageChange } = useSearch();
   const { toggleFavorite } = useFavorite({ setBonsais });
   const { deleteBonsai } = useDelete({ setBonsais });
-  const { handleClick, handleEdit } = useBonsaiNavigation();
+  const { handleClick, handleEdit } = useNavigation();
 
   return (
     <div className="h-screen w-full flex flex-col gap-4 md:gap-2 justify-start items-center">

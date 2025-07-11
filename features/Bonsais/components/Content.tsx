@@ -7,9 +7,9 @@ interface BonsaisContentProps {
     loading: boolean;
     search: string;
     bonsais: Bonsai[];
-    handleClick: (bonsaiId: string) => void;
-    handleDelete: (bonsaiId: string) => void;
-    handleEdit: (bonsaiId: string) => void;
+    handleClick: ({bonsaiId}: {bonsaiId: string}) => void;
+    handleDelete: ({bonsaiId}: {bonsaiId: string}) => void;
+    handleEdit: ({bonsaiId}: {bonsaiId: string}) => void;
     handleFavorite: ({ _id, favorite }: { _id: string, favorite: boolean }) => void;
 }
 
