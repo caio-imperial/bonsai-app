@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const db = client.db('bonsais')
     const bonsai = await db.collection('bonsais').findOne({ _id: new ObjectId(id) })
 
-    if (!bonsai) return res.status(404).json({ error: 'Bonsai não encontrado' })
+    if (!bonsai) return res.status(404).json({ error: 'Bonsai Id não encontrado', message: 'Bonsai não encontrado' })
 
     res.status(200).json(bonsai)
   }

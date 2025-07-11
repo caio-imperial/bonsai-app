@@ -12,14 +12,14 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../ui/collapsible";
-import { Button } from "../ui/button";
-import { ChevronsUpDown, Pencil, Trash } from "lucide-react";
+} from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
 import { memo, useState } from "react";
-import { TypographyH3 } from "../ui/typography";
+import { ChevronsUpDown, Pencil, Trash } from "lucide-react";
+import { TypographyH3 } from "@/components/ui/typography";
 import Link from "next/link";
 
-function CardEntry({
+function EntryCard({
   bonsaiId,
   entryId,
   title,
@@ -102,7 +102,7 @@ function CardEntry({
               <Pencil />
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" onClick={(e) => {handleDelete(entryId); e.stopPropagation()}} className="cursor-pointer">
+          <Button variant="ghost" size="icon" onClick={(e) => { handleDelete(entryId); e.stopPropagation() }} className="cursor-pointer">
             <Trash />
           </Button>
         </div>
@@ -111,6 +111,4 @@ function CardEntry({
   );
 }
 
-const MemoCardEntry = memo(CardEntry);
-
-export { MemoCardEntry };
+export default memo(EntryCard);

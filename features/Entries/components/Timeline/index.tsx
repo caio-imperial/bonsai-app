@@ -1,12 +1,11 @@
 import React from "react";
 import styles from "./Timeline.module.scss";
-import { mockEntries } from "./mockData";
 import { Entry } from "@/types";
 import { TreePine } from "lucide-react";
-import { MemoCardEntry } from "../Card/Entry";
+import EntryCard from "../Card";
 
 const Timeline = ({
-  entries = mockEntries,
+  entries = [],
   handleDelete,
 }: {
   entries?: Entry[];
@@ -20,7 +19,7 @@ const Timeline = ({
             <TreePine className="w-4 h-4" />
           </div>
           <div className={styles.timelineContent}>
-            <MemoCardEntry
+            <EntryCard
               bonsaiId={entry.bonsaiId}
               entryId={entry._id}
               title={entry.title}
