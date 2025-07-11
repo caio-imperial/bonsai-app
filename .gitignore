@@ -20,7 +20,7 @@
 # production
 /build
 /public/uploads
-
+/.cursor
 # misc
 .DS_Store
 *.pem
