@@ -1,1 +1,1 @@
-import * from "./EntriesView";
+export * from "./EntriesViews";

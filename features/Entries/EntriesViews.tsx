@@ -10,7 +10,7 @@ import EntriesContent from "./components/Content";
 import { useFavorite } from "./hooks/useFavoriteBonsai";
 import { useNavigation } from "@/hooks/useNavegation";
 
-export default function TimelinePage() {
+const EntriesViews = () => {
   const router = useRouter();
   const { bonsaiId } = router.query as { bonsaiId: string };
 
@@ -36,3 +36,5 @@ export default function TimelinePage() {
     </div>
   );
 }
+
+export default EntriesViews;
