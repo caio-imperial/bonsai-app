@@ -1,23 +1,23 @@
 import { EntryResponse } from "@/types/entry";
-import Timeline from "./Timeline";
+import EntriesListTimeline from "./Timeline";
 import EntriesContentLoading from "./ContentLoading";
 import EntriesContentEmpty from "./ContentEmpty";
 
-interface EntriesContentProps {
+interface EntriesListContentProps {
     entries: EntryResponse;
     entriesLoading: boolean;
     handleDelete: (entryId: string) => void;
 }
 
-const EntriesContent = ({ entries, entriesLoading, handleDelete }: EntriesContentProps) => {
+const EntriesListContent = ({ entries, entriesLoading, handleDelete }: EntriesListContentProps) => {
     if (entriesLoading) return <EntriesContentLoading />;
     if (entries && entries.length === 0) return <EntriesContentEmpty />;
     return (
-        <Timeline
+        <EntriesListTimeline
             entries={entries || []}
             handleDelete={handleDelete}
         />
     );
 };
 
-export default EntriesContent;
+export default EntriesListContent;

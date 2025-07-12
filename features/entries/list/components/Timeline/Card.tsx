@@ -19,16 +19,7 @@ import { ChevronsUpDown, Pencil, Trash } from "lucide-react";
 import { TypographyH3 } from "@/components/ui/typography";
 import Link from "next/link";
 
-function EntryCard({
-  bonsaiId,
-  entryId,
-  title,
-  note,
-  dateEntry,
-  imageUrl,
-  className,
-  handleDelete,
-}: {
+interface EntriesListTimelineCardProps {
   bonsaiId: string;
   entryId: string;
   title: string;
@@ -37,7 +28,18 @@ function EntryCard({
   imageUrl?: string;
   className?: string;
   handleDelete: (id: string) => void;
-}) {
+}
+
+const EntriesListTimelineCard = ({
+  bonsaiId,
+  entryId,
+  title,
+  note,
+  dateEntry,
+  imageUrl,
+  className,
+  handleDelete,
+}: EntriesListTimelineCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   function formatDateForDisplay(date: string) {
     const dateObj = new Date(date);
@@ -111,4 +113,4 @@ function EntryCard({
   );
 }
 
-export default memo(EntryCard);
+export default memo(EntriesListTimelineCard);

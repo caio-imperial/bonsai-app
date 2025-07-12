@@ -1,7 +1,7 @@
 import { TypographyH1 } from "@/components/ui/typography";
 
-const EntriesContentEmpty = () => {
+const EntriesListContentEmpty = () => {
     return <TypographyH1>Nenhum registro ainda 😢</TypographyH1>
 };
 
-export default EntriesContentEmpty;
+export default EntriesListContentEmpty;

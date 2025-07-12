@@ -2,9 +2,9 @@ import React from "react";
 import styles from "./Timeline.module.scss";
 import { Entry } from "@/types";
 import { TreePine } from "lucide-react";
-import EntryCard from "../Card";
+import EntriesListTimelineCard from "./Card";
 
-const Timeline = ({
+const EntriesListTimeline = ({
   entries = [],
   handleDelete,
 }: {
@@ -19,7 +19,7 @@ const Timeline = ({
             <TreePine className="w-4 h-4" />
           </div>
           <div className={styles.timelineContent}>
-            <EntryCard
+            <EntriesListTimelineCard
               bonsaiId={entry.bonsaiId}
               entryId={entry._id}
               title={entry.title}
@@ -35,4 +35,4 @@ const Timeline = ({
   );
 };
 
-export default Timeline;
+export default EntriesListTimeline;

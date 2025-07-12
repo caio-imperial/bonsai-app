@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const EntriesContentLoading = () => {
+const EntriesListContentLoading = () => {
     return <Skeleton className="w-full h-96" />
 };
 
-export default EntriesContentLoading;
+export default EntriesListContentLoading;

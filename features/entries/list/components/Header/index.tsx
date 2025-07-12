@@ -1,11 +1,11 @@
 import { Bonsai } from "@/types";
 
-import EntriesHeaderMenuActions from "./MenuActions";
-import EntriesHeaderTitle from "./Title";
+import EntriesListHeaderMenuActions from "./MenuActions";
+import EntriesListHeaderTitle from "./Title";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
-interface EntriesHeaderProps {
+interface EntriesListHeaderProps {
     bonsai: Bonsai | null;
     bonsaiLoading: boolean;
     entriesLoading: boolean;
@@ -14,14 +14,14 @@ interface EntriesHeaderProps {
     handleAddEntry: ({bonsaiId}: {bonsaiId: string}) => void;
 }
 
-const EntriesHeader = ({
+const EntriesListHeader = ({
     bonsai,
     bonsaiLoading,
     entriesLoading,
     handleFavorite,
     handleEdit,
     handleAddEntry
-}: EntriesHeaderProps) => {
+}: EntriesListHeaderProps) => {
 
     return (
         <>
@@ -30,12 +30,12 @@ const EntriesHeader = ({
             </Link>
             <div className="flex justify-between gap-2">
                 <div className="w-full">
-                    <EntriesHeaderTitle bonsai={bonsai} loading={bonsaiLoading} />
+                    <EntriesListHeaderTitle bonsai={bonsai} loading={bonsaiLoading} />
                 </div>
-                <EntriesHeaderMenuActions bonsai={bonsai} entriesLoading={entriesLoading} handleFavorite={handleFavorite} handleEdit={handleEdit} handleAddEntry={handleAddEntry} />
+                <EntriesListHeaderMenuActions bonsai={bonsai} entriesLoading={entriesLoading} handleFavorite={handleFavorite} handleEdit={handleEdit} handleAddEntry={handleAddEntry} />
             </div>
         </>
     );
 };
 
-export default EntriesHeader;
+export default EntriesListHeader;

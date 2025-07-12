@@ -1,16 +1,13 @@
-// pages/bonsai/[id].tsx
 import { useRouter } from "next/router";
 import { useEntry } from "@/hooks/useEntry";
-import { useDeleteEntry } from "./hooks/useDeleteEntry";
+import { useDeleteEntry, useFavorite } from "./hooks";
 import { useBonsai } from "@/hooks/useBonsai";
-import { useUpdateBonsai } from "@/hooks/useUpdateBonsai";
-import EntriesHeader from "./components/Header";
+import EntriesListHeader from "./components/Header";
 import BonsaiNotFound from "./BonsaiNotFound";
-import EntriesContent from "./components/Content";
-import { useFavorite } from "./hooks/useFavoriteBonsai";
+import EntriesListContent from "./components/Content";
 import { useNavigation } from "@/hooks/useNavegation";
 
-const EntriesViews = () => {
+const EntriesListPage = () => {
   const router = useRouter();
   const { bonsaiId } = router.query as { bonsaiId: string };
 
@@ -24,7 +21,7 @@ const EntriesViews = () => {
 
   return (
     <div className="flex flex-col gap-2 mt-5">
-      <EntriesHeader 
+      <EntriesListHeader 
         bonsai={bonsai} 
         bonsaiLoading={bonsaiLoading} 
         entriesLoading={entriesLoading} 
@@ -32,9 +29,9 @@ const EntriesViews = () => {
         handleEdit={handleEdit} 
         handleAddEntry={handleAddEntry} 
       />
-      <EntriesContent entries={entries} entriesLoading={entriesLoading} handleDelete={deleteEntry} />
+      <EntriesListContent entries={entries} entriesLoading={entriesLoading} handleDelete={deleteEntry} />
     </div>
   );
 }
 
-export default EntriesViews;
+export default EntriesListPage;

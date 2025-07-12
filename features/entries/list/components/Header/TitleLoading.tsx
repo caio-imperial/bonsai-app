@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const EntriesHeaderTitleLoading = () => {
+const EntriesListHeaderTitleLoading = () => {
     return (
         <>
             <Skeleton className="w-full h-4 mb-1" />
@@ -10,4 +10,4 @@ const EntriesHeaderTitleLoading = () => {
 };
 
 
-export default EntriesHeaderTitleLoading;
+export default EntriesListHeaderTitleLoading;

@@ -1,15 +1,15 @@
 import { TypographyH3, TypographyMuted } from "@/components/ui/typography";
 
 import { Bonsai } from "@/types";
-import EntriesHeaderTitleLoading from "./TitleLoading";
+import EntriesListHeaderTitleLoading from "./TitleLoading";
 
-interface EntriesHeaderTitleProps {
+interface EntriesListHeaderTitleProps {
     bonsai: Bonsai | null;
     loading: boolean;
 }
 
-const EntriesHeaderTitle = ({ bonsai, loading }: EntriesHeaderTitleProps) => {
-    if (loading || !bonsai) return <EntriesHeaderTitleLoading />;
+const EntriesListHeaderTitle = ({ bonsai, loading }: EntriesListHeaderTitleProps) => {
+    if (loading || !bonsai) return <EntriesListHeaderTitleLoading />;
     return (
         <>
             {bonsai?.species && (
@@ -23,4 +23,4 @@ const EntriesHeaderTitle = ({ bonsai, loading }: EntriesHeaderTitleProps) => {
 };
 
 
-export default EntriesHeaderTitle;
+export default EntriesListHeaderTitle;

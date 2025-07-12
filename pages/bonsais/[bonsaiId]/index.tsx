@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import EntriesView from "@/features/Entries/EntriesViews";
+import EntriesListPage from "@/features/entries/list/EntriesViews";
 
 export default function BonsaiSelectedView() {
   return (
@@ -10,7 +10,7 @@ export default function BonsaiSelectedView() {
         <meta name="description" content="Bonsai" />
         <meta name="keywords" content="Bonsai" />
       </Head>
-      <EntriesView />
+      <EntriesListPage />
     </>
   );
 }

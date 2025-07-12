@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 
 import { Bonsai } from "@/types";
 
-interface EntriesHeaderMenuActionsProps {
+interface EntriesListHeaderMenuActionsProps {
     bonsai: Bonsai | null;
     entriesLoading: boolean;
     handleFavorite: ({ bonsaiId, favorite }: { bonsaiId: string, favorite: boolean }) => void;
     handleEdit: ({ bonsaiId }: { bonsaiId: string }) => void;
     handleAddEntry: ({ bonsaiId }: { bonsaiId: string }) => void;
 }
-const EntriesHeaderMenuActions = ({ bonsai, entriesLoading, handleFavorite, handleEdit, handleAddEntry }: EntriesHeaderMenuActionsProps) => {
+const EntriesListHeaderMenuActions = ({ bonsai, entriesLoading, handleFavorite, handleEdit, handleAddEntry }: EntriesListHeaderMenuActionsProps) => {
     return (
         <div className="flex gap-2">
             <Button variant="secondary" disabled={entriesLoading || !bonsai} onClick={(e) => { handleFavorite({ bonsaiId: bonsai?._id || '', favorite: bonsai?.favorite || false }); e.stopPropagation() }} className="cursor-pointer">
@@ -27,4 +27,4 @@ const EntriesHeaderMenuActions = ({ bonsai, entriesLoading, handleFavorite, hand
     );
 };
 
-export default EntriesHeaderMenuActions;
+export default EntriesListHeaderMenuActions;
