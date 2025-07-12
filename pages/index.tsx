@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import Head from "next/head";
 
-import BonsaisView from "@/features/Bonsais/BonsaisView";
+import BonsaisListPage from "@/features/bonsais/list/BonsaisListPage";
 
 export default function Home() {
 
@@ -12,7 +11,7 @@ export default function Home() {
         <meta name="description" content="Bonsais" />
         <meta name="keywords" content="Bonsais" />
       </Head>
-      <BonsaisView />
+      <BonsaisListPage />
     </>
   );
 }

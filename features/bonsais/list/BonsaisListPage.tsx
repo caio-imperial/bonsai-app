@@ -3,11 +3,11 @@ import {
   BonsaisSearch,
   BonsaisContent,
   BonsaisFooter,
-} from "@/features/Bonsais/components";
-import { useFavorite, useDelete, useSearch } from "@/features/Bonsais/hooks";
+} from "@/features/bonsais/list/components";
+import { useFavorite, useDelete, useSearch } from "@/features/bonsais/list/hooks";
 import { useNavigation } from "@/hooks/useNavegation";
 
-function BonsaisView() {
+const BonsaisListPage = () => {
   const { search, handleSearch, bonsais, setBonsais, loading, params, meta, handlePageChange } = useSearch();
   const { toggleFavorite } = useFavorite({ setBonsais });
   const { deleteBonsai } = useDelete({ setBonsais });
@@ -44,6 +44,6 @@ function BonsaisView() {
       />
     </div>
   );
-}
+};
 
-export default BonsaisView;
+export default BonsaisListPage;

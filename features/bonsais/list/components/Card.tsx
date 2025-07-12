@@ -5,10 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Label } from "../../../components/ui/label";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Pencil, Star, StarHalf, Trash } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { memo } from "react";
 import { Bonsai } from "@/types/bonsai";
 

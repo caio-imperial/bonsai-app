@@ -1,4 +1,4 @@
-import BonsaisPagination from "@/features/Bonsais/components/Pagination";
+import BonsaisPagination from "@/features/bonsais/list/components/Pagination";
 
 import { BonsaisResponse } from "@/types/bonsai";
 
