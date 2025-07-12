@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: bonsais_app
+    image: bonsais_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - IMGBB_API_KEY=${IMGBB_API_KEY}
