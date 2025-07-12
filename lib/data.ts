@@ -2,7 +2,7 @@
 import clientPromise from "@/lib/mongodb";
 import { Bonsai, CreateBonsai, Entry } from "@/types";
 import { ObjectId } from "mongodb";
-import { normalizeString, sanitizeInput } from "./utils";
+import { sanitizeInput } from "./utils";
 
 export async function getBonsaisCount({ search }: { search: string }) {
   const client = await clientPromise;

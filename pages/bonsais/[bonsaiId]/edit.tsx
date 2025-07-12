@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { ArrowLeftIcon, Loader2Icon, SaveIcon, XIcon } from "lucide-react"
+import { ArrowLeftIcon, Loader2Icon, SaveIcon } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"

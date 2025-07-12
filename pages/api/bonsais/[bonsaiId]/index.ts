@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { deleteBonsai, getEntries, updateBonsai } from '@/lib/data'
+import { deleteBonsai, updateBonsai } from '@/lib/data'
 import clientPromise from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
 
