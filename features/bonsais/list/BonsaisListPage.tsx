@@ -1,9 +1,7 @@
-import { 
-  BonsaisHeader,
-  BonsaisSearch,
-  BonsaisContent,
-  BonsaisFooter,
-} from "@/features/bonsais/list/components";
+import BonsaisHeader from "./components/Header";
+import BonsaisSearch from "./components/Search";
+import BonsaisContent from "./components/Content";
+import BonsaisFooter from "./components/Footer";
 import { useFavorite, useDelete, useSearch } from "@/features/bonsais/list/hooks";
 import { useNavigation } from "@/hooks/useNavegation";
 
