@@ -1,1 +1,1 @@
-export * from "./EntriesViews";
+export * from "./list/EntriesListPage";

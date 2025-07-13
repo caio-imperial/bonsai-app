@@ -3,7 +3,7 @@ import { useEntry } from "@/hooks/useEntry";
 import { useDeleteEntry, useFavorite } from "./hooks";
 import { useBonsai } from "@/hooks/useBonsai";
 import EntriesListHeader from "./components/Header";
-import BonsaiNotFound from "./BonsaiNotFound";
+import BonsaiNotFound   from "./BonsaiNotFound";
 import EntriesListContent from "./components/Content";
 import { useNavigation } from "@/hooks/useNavegation";
 
