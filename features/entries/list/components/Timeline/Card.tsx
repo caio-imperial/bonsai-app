@@ -56,8 +56,8 @@ const EntriesListTimelineCard = ({
           <Image
             src={imageUrl}
             alt={title}
-            width={100}
-            height={100}
+            width={350}
+            height={350}
             className="w-full h-full max-h-86 rounded-t-lg"
           />
         )}
