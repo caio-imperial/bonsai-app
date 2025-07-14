@@ -5,22 +5,19 @@ import { useLogin } from '@/hooks/useLogin'
 const useAuthLogin = () => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
-  const { login } = useLogin()
+  const { login, error } = useLogin()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setError('')
     setLoading(true)
 
     try {
       await login(username, password)
       router.push('/')
     } catch (err: unknown) {
-      console.error('Erro ao fazer login', err)
-      setError('Login falhou. Por favor, verifique suas credenciais.')
+      console.error(err)
     } finally {
       setLoading(false)
     }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 export const useLogin = () => {
   const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const login = async (username: string, password: string) => {
     setLoading(true)
@@ -14,15 +15,18 @@ export const useLogin = () => {
         body: JSON.stringify({ username, password }),
       })
       if (!response.ok) {
-        throw new Error('Login failed')
+        const errorData = await response.json()
+        setError(errorData.message)
+        return
       }
       return response.json()
-    } catch {
-      throw new Error('Login failed')
+    } catch (error: unknown) {
+      console.log(error)
+      setError(error instanceof Error ? error.message : 'Login failed')
     } finally {
       setLoading(false)
     }
   }
 
-  return { login, loading }
+  return { login, loading, error }
 }

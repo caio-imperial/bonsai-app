@@ -35,5 +35,7 @@ export default async function handler(
     return res.status(200).json({ message: 'Login successful!' })
   }
 
-  return res.status(401).json({ error: 'Invalid credentials.' })
+  return res
+    .status(401)
+    .json({ error: 'Invalid credentials.', message: 'Invalid credentials.' })
 }

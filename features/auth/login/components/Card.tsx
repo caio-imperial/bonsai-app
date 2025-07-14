@@ -16,7 +16,7 @@ interface AuthLoginCardProps {
   setUsername: (username: string) => void
   password: string
   setPassword: (password: string) => void
-  error: string
+  error: string | null
   loading: boolean
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }
@@ -31,8 +31,8 @@ const AuthLoginCard = ({
   handleSubmit,
 }: AuthLoginCardProps) => {
   return (
-    <Card className="w-full max-w-sm">
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="w-full max-w-sm">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
@@ -84,8 +84,8 @@ const AuthLoginCard = ({
             </div>
           )}
         </CardFooter>
-      </form>
-    </Card>
+      </Card>
+    </form>
   )
 }
 
