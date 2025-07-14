@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"
+import { useCallback, useState } from 'react'
 
 export function useDeleteBonsai() {
   const [loading, setLoading] = useState(false)
@@ -10,15 +10,19 @@ export function useDeleteBonsai() {
 
     try {
       const res = await fetch(`/api/bonsais/${bonsaiId}`, {
-        method: "DELETE"
+        method: 'DELETE',
       })
       if (!res.ok) {
-        throw new Error("Erro ao deletar registro 😢")
+        throw new Error('Erro ao deletar registro 😢')
       }
 
       // Aqui você pode avisar o pai ou atualizar a UI
-    } catch (err: any) {
-      setError(err.message || "Erro inesperado ao deletar")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('Erro inesperado ao deletar')
+      }
     } finally {
       setLoading(false)
     }

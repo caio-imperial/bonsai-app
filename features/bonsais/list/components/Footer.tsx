@@ -1,18 +1,22 @@
-import BonsaisPagination from "@/features/bonsais/list/components/Pagination";
+import BonsaisPagination from '@/features/bonsais/list/components/Pagination'
 
-import { BonsaisResponse } from "@/types/bonsai";
+import type { BonsaisResponse } from '@/types/bonsai'
 
 interface BonsaisFooterProps {
-  meta: BonsaisResponse["meta"];
+  meta: BonsaisResponse['meta']
   params: {
-    page: number;
-    limit: number;
-  };
-  handlePageChange: (page: number) => void;
+    page: number
+    limit: number
+  }
+  handlePageChange: (page: number) => void
 }
 
-const BonsaisFooter = ({ meta, params, handlePageChange }: BonsaisFooterProps) => {
-  if (meta.totalPages <= 1) return null;
+const BonsaisFooter = ({
+  meta,
+  params,
+  handlePageChange,
+}: BonsaisFooterProps) => {
+  if (meta.totalPages <= 1) return null
 
   return (
     <BonsaisPagination
@@ -20,7 +24,7 @@ const BonsaisFooter = ({ meta, params, handlePageChange }: BonsaisFooterProps) =
       currentPage={params.page}
       onPageChange={handlePageChange}
     />
-  );
-};
+  )
+}
 
-export default BonsaisFooter;
+export default BonsaisFooter

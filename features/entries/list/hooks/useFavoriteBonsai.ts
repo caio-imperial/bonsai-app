@@ -1,31 +1,34 @@
-import { useCallback } from "react";
-import { useUpdateBonsai } from "@/hooks/useUpdateBonsai";
+import { useCallback } from 'react'
+import { useUpdateBonsai } from '@/hooks/useUpdateBonsai'
 
-import { Bonsai } from "@/types/bonsai";
+import type { Bonsai } from '@/types/bonsai'
 
 type useFavoriteProps = {
-  setBonsai: React.Dispatch<React.SetStateAction<Bonsai | null>>;
-  bonsai: Bonsai | null;
-};
+  setBonsai: React.Dispatch<React.SetStateAction<Bonsai | null>>
+  bonsai: Bonsai | null
+}
 
 type ToggleFavoriteProps = {
-  bonsaiId: string;
-  favorite: boolean;
-};
+  bonsaiId: string
+  favorite: boolean
+}
 
 export function useFavorite({ setBonsai, bonsai }: useFavoriteProps) {
-    const { updateBonsai, loading, error } = useUpdateBonsai();
+  const { updateBonsai, loading, error } = useUpdateBonsai()
 
-    const toggleFavorite = useCallback(async ({bonsaiId, favorite}: ToggleFavoriteProps) => {
-      if (!bonsai) return;
-        try {
-          await updateBonsai({ _id: bonsaiId, favorite: !favorite });
-    
-          setBonsai({ ...bonsai, favorite: !favorite });
-        } catch (e) {
-          console.error("Erro ao favoritar bonsai", e);
-        }
-      }, [updateBonsai, setBonsai, bonsai]);
+  const toggleFavorite = useCallback(
+    async ({ bonsaiId, favorite }: ToggleFavoriteProps) => {
+      if (!bonsai) return
+      try {
+        await updateBonsai({ _id: bonsaiId, favorite: !favorite })
 
-    return { toggleFavorite, loading, error };
+        setBonsai({ ...bonsai, favorite: !favorite })
+      } catch (e) {
+        console.error('Erro ao favoritar bonsai', e)
+      }
+    },
+    [updateBonsai, setBonsai, bonsai]
+  )
+
+  return { toggleFavorite, loading, error }
 }

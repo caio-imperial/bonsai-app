@@ -1,33 +1,34 @@
+import { ChevronsUpDown, Pencil, Trash } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { memo, useState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
-  CardAction,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/card'
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Button } from "@/components/ui/button";
-import { memo, useState } from "react";
-import { ChevronsUpDown, Pencil, Trash } from "lucide-react";
-import { TypographyH3 } from "@/components/ui/typography";
-import Link from "next/link";
+} from '@/components/ui/collapsible'
+import { TypographyH3 } from '@/components/ui/typography'
+import { cn } from '@/lib/utils'
 
 interface EntriesListTimelineCardProps {
-  bonsaiId: string;
-  entryId: string;
-  title: string;
-  note?: string;
-  dateEntry?: string;
-  imageUrl?: string;
-  className?: string;
-  handleDelete: (id: string) => void;
+  bonsaiId: string
+  entryId: string
+  title: string
+  note?: string
+  dateEntry?: string
+  imageUrl?: string
+  className?: string
+  handleDelete: (id: string) => void
 }
 
 const EntriesListTimelineCard = ({
@@ -40,22 +41,26 @@ const EntriesListTimelineCard = ({
   className,
   handleDelete,
 }: EntriesListTimelineCardProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
   function formatDateForDisplay(date: string) {
-    const dateObj = new Date(date);
-    return dateObj.toLocaleDateString("pt-BR", {
-      day: "numeric",
-      month: "long",
-    });
+    const dateObj = new Date(date)
+    return dateObj.toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+    })
   }
   return (
-    <Card className={cn("w-full max-w-sm", className)}>
+    <Card className={cn('w-full max-w-sm', className)}>
       <CardContent>
-        <img
-          src={imageUrl}
-          alt={title}
-          className="w-full h-full max-h-86 rounded-t-lg"
-        />
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={title}
+            width={100}
+            height={100}
+            className="w-full h-full max-h-86 rounded-t-lg"
+          />
+        )}
       </CardContent>
       <CardHeader>
         <Collapsible
@@ -84,7 +89,7 @@ const EntriesListTimelineCard = ({
             <CardDescription>
               <div
                 className="card-text break-words"
-                style={{ whiteSpace: "pre-line" }}
+                style={{ whiteSpace: 'pre-line' }}
               >
                 {note}
               </div>
@@ -104,13 +109,21 @@ const EntriesListTimelineCard = ({
               <Pencil />
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" onClick={(e) => { handleDelete(entryId); e.stopPropagation() }} className="cursor-pointer">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={e => {
+              handleDelete(entryId)
+              e.stopPropagation()
+            }}
+            className="cursor-pointer"
+          >
             <Trash />
           </Button>
         </div>
       </CardFooter>
     </Card>
-  );
+  )
 }
 
-export default memo(EntriesListTimelineCard);
+export default memo(EntriesListTimelineCard)

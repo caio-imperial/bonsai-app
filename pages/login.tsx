@@ -1,7 +1,7 @@
-import AuthLoginPage from "@/features/auth/login/AuthLoginPage";
+import AuthLoginPage from '@/features/auth/login/AuthLoginPage'
 
 const LoginPage = () => {
-    return <AuthLoginPage />;
-};
+  return <AuthLoginPage />
+}
 
-export default LoginPage;
+export default LoginPage

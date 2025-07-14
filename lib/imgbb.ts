@@ -1,13 +1,13 @@
 // lib/imgbb.ts
-import fs from 'fs/promises'
-import { UploadedFile } from '@/lib/types'
+import fs from 'node:fs/promises'
+import type { UploadedFile } from '@/lib/types'
 
 export async function uploadToImgBB(file: UploadedFile): Promise<string> {
   const apiKey = process.env.IMGBB_API_KEY
   if (!apiKey) throw new Error('IMGBB_API_KEY não definida no .env')
 
   if (!file || !file.filepath) {
-    throw new Error('File is not defined or filepath is missing');
+    throw new Error('File is not defined or filepath is missing')
   }
 
   const buffer = await fs.readFile(file.filepath)

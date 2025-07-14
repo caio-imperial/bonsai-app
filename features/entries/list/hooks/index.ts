@@ -1,2 +1,2 @@
-export * from "./useDeleteEntry";
-export * from "./useFavoriteBonsai";
+export * from './useDeleteEntry'
+export * from './useFavoriteBonsai'
