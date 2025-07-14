@@ -1,0 +1,14 @@
+---
+description: |
+  Feature hooks should adapt shared hooks adding UI concerns like confirmation, state updates, and feedback.
+globs:features/**/**/hooks/use*.ts
+alwaysApply:true
+---
+
+# Rule: Feature hooks adapt shared hooks with UI behavior
+
+Feature hooks should:
+- Import and use shared hooks from /hooks.
+- Add UI logic: confirmation modals, toast, local state updates.
+- Not duplicate backend calls.
+- Provide clean APIs for components.

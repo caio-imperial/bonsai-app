@@ -1,0 +1,15 @@
+---
+description: |
+  Validação deve ser clara, específica e retornar erro com status adequado.
+  Validação complexa deve ser extraída para funções utilitárias ou schemas (ex: Zod).
+globs:pages/api/**/*.ts
+alwaysApply: true
+---
+
+# Rule: Explicit input validation in API handlers
+
+1. Valide campos obrigatórios antes de executar lógica.
+2. Use mensagens claras no JSON de erro.
+3. Considere extrair para funções reutilizáveis.
+4. Valide tipos e formatos básicos (ex: string, number).
+5. Não deixe inputs inválidos passarem para a camada de lib.

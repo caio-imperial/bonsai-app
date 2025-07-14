@@ -1,0 +1,14 @@
+---
+description: |
+  Shared hooks must contain only backend and business logic, no UI concerns.
+globs:hooks/**/*.ts
+alwaysApply:true
+---
+
+# Rule: Shared hooks isolate data logic
+
+Shared hooks should:
+- Handle API calls, data fetching, mutations.
+- Return loading, error, and data states.
+- Avoid UI logic like modals or state updates for components.
+- Use types from /types and keep side effects minimal.

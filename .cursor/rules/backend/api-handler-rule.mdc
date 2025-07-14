@@ -1,0 +1,27 @@
+---
+description: |
+  Next.js API handlers must:
+  - Support only explicit HTTP methods.
+  - Validar inputs com mensagens claras.
+  - Usar funções de lib para lógica de negócio e dados.
+  - Retornar respostas JSON consistentes com status apropriado.
+  - Tratar erros inesperados com resposta 500 genérica.
+  - Utilizar types NextApiRequest e NextApiResponse.
+  - Não conter lógica complexa ou acesso direto ao banco.
+  - Limitar duração das operações para evitar timeouts.
+  - Responder rapidamente para evitar travamentos do servidor.
+globs:pages/api/**/*.ts
+alwaysApply: true
+---
+
+# Rule: Next.js API handler best practices
+
+1. Use switch/case ou if para tratar `req.method`.
+2. Valide parâmetros obrigatórios no início, retorne status 400/422 se inválidos.
+3. Use try/catch para capturar erros e retornar 500 com mensagem genérica.
+4. Delegue chamadas para funções da camada lib.
+5. Sempre envie JSON na resposta (`res.json`).
+6. Retorne 405 para métodos não suportados (`res.status(405).end()`).
+7. Evite bloqueios síncronos, use async/await corretamente.
+8. Evite manipular headers fora do escopo da função.
+9. Logging de erros pode ser feito via console.error, mas evite expor detalhes para o cliente.

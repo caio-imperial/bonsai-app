@@ -1,0 +1,14 @@
+---
+description: |
+  Page components compose features and layouts; avoid business logic or direct API calls.
+globs:pages/**/*.tsx
+alwaysApply:true
+---
+
+# Rule: Pages are layout and composition only
+
+Pages should:
+- Include Head metadata.
+- Compose feature components/hooks.
+- Avoid API calls and complex state logic.
+- Handle minimal side-effects (e.g. analytics).
