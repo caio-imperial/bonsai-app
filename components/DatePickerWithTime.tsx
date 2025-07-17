@@ -1,21 +1,24 @@
-"use client"
+'use client'
 
-import { ChevronDownIcon } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { ChevronDownIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { useState } from "react"
-import { useEffect } from "react"
+} from '@/components/ui/popover'
 
-
-export function DatePickerWithTime( { initialDate, onDateChange }: { initialDate?: Date, onDateChange?: (date: Date) => void } ) {
+export function DatePickerWithTime({
+  initialDate,
+  onDateChange,
+}: {
+  initialDate?: Date
+  onDateChange?: (date: Date) => void
+}) {
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState<Date>(initialDate || new Date())
 
@@ -41,7 +44,7 @@ export function DatePickerWithTime( { initialDate, onDateChange }: { initialDate
               id="date-picker"
               className="w-32 justify-between font-normal"
             >
-              {date ? date.toLocaleDateString() : "Select date"}
+              {date ? date.toLocaleDateString() : 'Select date'}
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
@@ -50,7 +53,7 @@ export function DatePickerWithTime( { initialDate, onDateChange }: { initialDate
               mode="single"
               selected={date}
               captionLayout="dropdown"
-              onSelect={(date) => {
+              onSelect={date => {
                 setDate(date || new Date())
                 setOpen(false)
               }}

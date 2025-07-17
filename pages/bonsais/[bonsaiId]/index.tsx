@@ -1,6 +1,6 @@
-import Head from "next/head";
+import Head from 'next/head'
 
-import EntriesListPage from "@/features/entries/list/EntriesListPage";
+import EntriesListPage from '@/features/entries/list/EntriesListPage'
 
 export default function BonsaiSelectedView() {
   return (
@@ -12,5 +12,5 @@ export default function BonsaiSelectedView() {
       </Head>
       <EntriesListPage />
     </>
-  );
+  )
 }

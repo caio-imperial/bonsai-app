@@ -1,0 +1,40 @@
+---
+description: |
+  Feature Page Components are the main UI composition units of any feature.
+  They orchestrate feature hooks and subcomponents, manage layout, and are imported by pages.
+globs:features/**/**/*Page.tsx
+alwaysApply:true
+---
+
+# Rule: Feature View Components orchestrate hooks and UI for a feature
+
+Feature View Components should:
+
+1. Import and use hooks from their own feature (e.g., `useSearch`, `useDelete`).
+2. Import and compose multiple subcomponents from their feature.
+3. Pass hook state and handlers as props down to subcomponents.
+4. Manage container/layout styling (e.g., Tailwind flex, gap, width).
+5. Not contain direct API calls or business logic — use hooks for that.
+6. Be the default export.
+7. Be imported by page components as the primary feature UI.
+
+**Example usage:**
+
+```tsx
+import { Header, Search, Content, Footer } from "./components";
+import { useSearch, useDelete, useFavorite } from "./hooks";
+
+export default function Feature*Page() {
+  const { data, loading, params, setParams } = useSearch();
+  const { deleteItem } = useDelete();
+  const { toggleFavorite } = useFavorite();
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Header />
+      <Search search={params.search} onSearch={setParams} loading={loading} />
+      <Content data={data} onDelete={deleteItem} onFavorite={toggleFavorite} />
+      <Footer params={params} />
+    </div>
+  );
+}

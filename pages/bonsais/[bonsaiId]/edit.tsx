@@ -1,17 +1,26 @@
-import { useRouter } from "next/router"
-import Link from "next/link"
-import { ArrowLeftIcon, Loader2Icon, SaveIcon } from "lucide-react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { toast } from "sonner";
-import { useBonsai } from "@/hooks/useBonsai"
+import { ArrowLeftIcon, Loader2Icon, SaveIcon } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { useBonsai } from '@/hooks/useBonsai'
 
 export default function EditBonsai() {
   const router = useRouter()
   const { bonsaiId } = router.query
 
-  const { bonsai, loading, setBonsai } = useBonsai(bonsaiId as string | undefined)
+  const { bonsai, loading, setBonsai } = useBonsai(
+    bonsaiId as string | undefined
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (bonsai) {
@@ -22,15 +31,15 @@ export default function EditBonsai() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const response = await fetch(`/api/bonsais/${bonsaiId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bonsai)
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bonsai),
     })
     if (response.ok) {
-      router.push("/")
+      router.push('/')
     } else {
-      const data = await response.json();
-      toast(data.message || 'Erro ao atualizar bonsai');
+      const data = await response.json()
+      toast(data.message || 'Erro ao atualizar bonsai')
     }
   }
 
@@ -41,21 +50,19 @@ export default function EditBonsai() {
       <Link href="/">
         <ArrowLeftIcon className="w-6 h-6" />
       </Link>
-      <form
-        onSubmit={handleSubmit}
-        className="flex justify-center"
-      >
+      <form onSubmit={handleSubmit} className="flex justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Editar bonsai</CardTitle>
-            <CardDescription>
-              Edite os dados do seu bonsai
-            </CardDescription>
+            <CardDescription>Edite os dados do seu bonsai</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div>
-              <label className="text-sm font-medium">Nome</label>
+              <label htmlFor="name" className="text-sm font-medium">
+                Nome
+              </label>
               <Input
+                id="name"
                 type="text"
                 name="name"
                 value={bonsai.name}
@@ -64,8 +71,11 @@ export default function EditBonsai() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium">Espécie (opcional)</label>
+              <label htmlFor="species" className="text-sm font-medium">
+                Espécie (opcional)
+              </label>
               <Input
+                id="species"
                 type="text"
                 name="species"
                 value={bonsai.species}
@@ -98,9 +108,7 @@ export default function EditBonsai() {
               variant="destructive"
               asChild
             >
-              <Link href="/">
-                Cancelar
-              </Link>
+              <Link href="/">Cancelar</Link>
             </Button>
           </CardFooter>
         </Card>

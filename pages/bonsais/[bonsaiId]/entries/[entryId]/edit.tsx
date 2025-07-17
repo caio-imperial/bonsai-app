@@ -1,15 +1,22 @@
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { ArrowLeftIcon, Loader2, SaveIcon, XIcon } from 'lucide-react'
 import Link from 'next/link'
-import { Entry } from '@/types'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { ArrowLeftIcon, Loader2, SaveIcon, XIcon } from 'lucide-react';
-import { DatePickerWithTime } from '@/components/DatePickerWithTime';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { DatePickerWithTime } from '@/components/DatePickerWithTime'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import type { Entry } from '@/types'
 
 interface EditEntry extends Omit<Entry, 'dateEntry'> {
   image: File | null
@@ -33,26 +40,28 @@ export default function EditEntry() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!entryId || typeof entryId !== 'string') return; // Ensure entryId is a valid string
+    if (!entryId || typeof entryId !== 'string') return // Ensure entryId is a valid string
     fetch(`/api/bonsais/${bonsaiId}/entries/${entryId}`)
       .then(res => {
         if (!res.ok) {
-          throw new Error('Failed to fetch entry');
+          throw new Error('Failed to fetch entry')
         }
-        return res.json();
+        return res.json()
       })
       .then(data => {
-        setEntry({ ...data.entry, dateEntry: new Date(data.entry.dateEntry) });
-        setLoading(false);
+        setEntry({ ...data.entry, dateEntry: new Date(data.entry.dateEntry) })
+        setLoading(false)
       })
       .catch(error => {
-        console.error(error);
-        toast('Erro ao carregar registro');
-        setLoading(false); // Ensure loading is set to false on error
-      });
-  }, [entryId, bonsaiId]);
+        console.error(error)
+        toast('Erro ao carregar registro')
+        setLoading(false) // Ensure loading is set to false on error
+      })
+  }, [entryId, bonsaiId])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setEntry({ ...entry, [e.target.name]: e.target.value })
   }
 
@@ -66,20 +75,24 @@ export default function EditEntry() {
       formData.append('image', entry.image)
     }
 
-    const response = await fetch(`/api/bonsais/${bonsaiId}/entries/${entryId}`, {
-      method: 'PATCH',
-      body: formData
-    })
+    const response = await fetch(
+      `/api/bonsais/${bonsaiId}/entries/${entryId}`,
+      {
+        method: 'PATCH',
+        body: formData,
+      }
+    )
 
     if (response.ok) {
       router.push(`/bonsais/${bonsaiId}`)
     } else {
-      const data = await response.json();
-      toast(data.message || 'Erro ao atualizar entrada');
+      const data = await response.json()
+      toast(data.message || 'Erro ao atualizar entrada')
     }
   }
 
-  if (loading) return <p className="text-center mt-4">Carregando registro... 🌱</p>
+  if (loading)
+    return <p className="text-center mt-4">Carregando registro... 🌱</p>
   const dateEntry = new Date(entry.dateEntry)
 
   return (
@@ -87,10 +100,7 @@ export default function EditEntry() {
       <Link href={`/bonsais/${bonsaiId}`}>
         <ArrowLeftIcon className="w-6 h-6" />
       </Link>
-      <form
-        onSubmit={handleSubmit}
-        className="flex justify-center"
-      >
+      <form onSubmit={handleSubmit} className="flex justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Editar registro</CardTitle>
@@ -100,15 +110,29 @@ export default function EditEntry() {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <Label>Data de registro</Label>
-            <DatePickerWithTime initialDate={dateEntry} onDateChange={(date) => {
-              if (date?.toISOString() !== entry.dateEntry.toISOString()) {
-                handleChange({ target: { name: 'dateEntry', value: date } } as unknown as React.ChangeEvent<HTMLInputElement>)
-              }
-            }} />
+            <DatePickerWithTime
+              initialDate={dateEntry}
+              onDateChange={date => {
+                if (date?.toISOString() !== entry.dateEntry.toISOString()) {
+                  handleChange({
+                    target: { name: 'dateEntry', value: date },
+                  } as unknown as React.ChangeEvent<HTMLInputElement>)
+                }
+              }}
+            />
             <Label htmlFor="title">Título</Label>
-            <Input type="text" name="title" value={entry.title} onChange={handleChange} />
+            <Input
+              type="text"
+              name="title"
+              value={entry.title}
+              onChange={handleChange}
+            />
             <Label htmlFor="notes">Notas</Label>
-            <Textarea name="notes" value={entry.notes} onChange={handleChange} />
+            <Textarea
+              name="notes"
+              value={entry.notes}
+              onChange={handleChange}
+            />
           </CardContent>
           <CardFooter className="flex justify-end gap-2">
             <Button
@@ -130,7 +154,10 @@ export default function EditEntry() {
               )}
             </Button>
             <Button variant="destructive" className="cursor-pointer" asChild>
-              <Link href={`/bonsais/${bonsaiId}`} className="flex items-center gap-2">
+              <Link
+                href={`/bonsais/${bonsaiId}`}
+                className="flex items-center gap-2"
+              >
                 <XIcon className="w-4 h-4" />
                 Cancelar
               </Link>

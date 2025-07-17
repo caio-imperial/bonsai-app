@@ -1,9 +1,8 @@
-import Head from "next/head";
+import Head from 'next/head'
 
-import BonsaisListPage from "@/features/bonsais/list/BonsaisListPage";
+import BonsaisListPage from '@/features/bonsais/list/BonsaisListPage'
 
 export default function Home() {
-
   return (
     <>
       <Head>
@@ -13,5 +12,5 @@ export default function Home() {
       </Head>
       <BonsaisListPage />
     </>
-  );
+  )
 }

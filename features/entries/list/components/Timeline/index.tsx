@@ -1,20 +1,20 @@
-import React from "react";
-import styles from "./Timeline.module.scss";
-import { Entry } from "@/types";
-import { TreePine } from "lucide-react";
-import EntriesListTimelineCard from "./Card";
+import { TreePine } from 'lucide-react'
+
+import type { Entry } from '@/types'
+import EntriesListTimelineCard from './Card'
+import styles from './Timeline.module.scss'
 
 const EntriesListTimeline = ({
   entries = [],
   handleDelete,
 }: {
-  entries?: Entry[];
-  handleDelete: (id: string) => void;
+  entries?: Entry[]
+  handleDelete: (id: string) => void
 }) => {
   return (
     <div className={styles.mainTimeline}>
-      {entries.map((entry, index) => (
-        <div className={styles.timelineItem} key={index}>
+      {entries.map(entry => (
+        <div className={styles.timelineItem} key={entry._id}>
           <div className={styles.timelineIcon}>
             <TreePine className="w-4 h-4" />
           </div>
@@ -32,7 +32,7 @@ const EntriesListTimeline = ({
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default EntriesListTimeline;
+export default EntriesListTimeline

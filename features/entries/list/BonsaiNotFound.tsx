@@ -1,5 +1,5 @@
 const BonsaiNotFound = () => {
-  return <div>Bonsai não encontrado</div>;
-};
+  return <div>Bonsai não encontrado</div>
+}
 
-export default BonsaiNotFound;
+export default BonsaiNotFound

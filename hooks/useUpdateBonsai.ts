@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react"
-import { Bonsai } from "@/types/bonsai"
+import { useCallback, useState } from 'react'
+import type { Bonsai } from '@/types/bonsai'
 
 export function useUpdateBonsai() {
   const [loading, setLoading] = useState(true)
@@ -7,26 +7,26 @@ export function useUpdateBonsai() {
 
   const updateBonsai = useCallback(async (bonsai: Partial<Bonsai>) => {
     if (!bonsai || !bonsai._id) {
-      setError("Bonsai não encontrado")
-      return;
+      setError('Bonsai não encontrado')
+      return
     }
     setLoading(true)
     setError(null)
-    const { name, species, favorite } = bonsai;
+    const { name, species, favorite } = bonsai
     try {
-      await fetch(`/api/bonsais/${bonsai._id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            species,
-            favorite,
-          }),
-        }
+      await fetch(`/api/bonsais/${bonsai._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          species,
+          favorite,
+        }),
+      })
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : 'Erro inesperado ao atualizar'
       )
-    } catch (err: any) {
-      setError(err.message || "Erro inesperado ao atualizar")
     } finally {
       setLoading(false)
     }

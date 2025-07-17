@@ -1,0 +1,19 @@
+---
+description: |
+  A camada lib deve conter lógica pura de dados e regras de negócio.
+  Deve ser desacoplada do HTTP e de contextos externos.
+  Funções devem ser testáveis e reutilizáveis.
+globs: lib/**/*.ts
+alwaysApply: true
+---
+
+# Rule: Lib functions separate business logic from HTTP
+
+1. Não acessar objetos `req` ou `res`.
+2. Receber parâmetros explícitos e retornar dados ou lançar erros.
+3. Evitar efeitos colaterais inesperados.
+4. Usar tipagem explícita (TypeScript).
+5. Tratar erros internamente e propagar via throw.
+6. Não formatar resposta HTTP.
+7. Ser idempotentes sempre que possível.
+8. Documentar comportamento esperado.

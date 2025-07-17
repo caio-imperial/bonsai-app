@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react"
-import { Bonsai, BonsaisResponse } from "@/types/bonsai"
+import { useEffect, useState } from 'react'
+import type { Bonsai, BonsaisResponse } from '@/types/bonsai'
 
 export interface UseBonsaisProps {
   initialParams?: {
-    search?: string,
-    page?: number,
-    limit?: number,
+    search?: string
+    page?: number
+    limit?: number
   }
 }
 
 export function useBonsais({ initialParams }: UseBonsaisProps) {
-  const initialSearch = initialParams?.search || ""
+  const initialSearch = initialParams?.search || ''
   const initialPage = initialParams?.page || 1
   const initialLimit = initialParams?.limit || 10
   const [bonsais, setBonsais] = useState<Bonsai[]>([])
-  const [meta, setMeta] = useState<BonsaisResponse["meta"]>({
+  const [meta, setMeta] = useState<BonsaisResponse['meta']>({
     total: 0,
     page: initialPage,
     limit: initialLimit,
@@ -31,7 +31,9 @@ export function useBonsais({ initialParams }: UseBonsaisProps) {
 
   useEffect(() => {
     async function fetchBonsais() {
-      const res = await fetch(`/api/bonsais?search=${params.search}&page=${params.page}&limit=${params.limit}`)
+      const res = await fetch(
+        `/api/bonsais?search=${params.search}&page=${params.page}&limit=${params.limit}`
+      )
       const { data, meta }: BonsaisResponse = await res.json()
       setBonsais(data)
       setMeta(meta)

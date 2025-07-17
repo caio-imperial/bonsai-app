@@ -1,9 +1,7 @@
-import { TypographyH1 } from "@/components/ui/typography";
+import { TypographyH1 } from '@/components/ui/typography'
 
 const BonsaisHeader = () => {
-  return (
-    <TypographyH1>🌱 Meus Bonsais</TypographyH1>
-  );
-};
+  return <TypographyH1>🌱 Meus Bonsais</TypographyH1>
+}
 
-export default BonsaisHeader;
+export default BonsaisHeader

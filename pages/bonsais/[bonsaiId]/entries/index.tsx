@@ -1,51 +1,58 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ArrowLeftIcon, Loader2, PlusIcon } from "lucide-react";
-import Link from "next/link";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { DatePickerWithTime } from "@/components/DatePickerWithTime";
-import { toast } from "sonner";
+import { ArrowLeftIcon, Loader2, PlusIcon } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { DatePickerWithTime } from '@/components/DatePickerWithTime'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function NewEntry() {
-  const router = useRouter();
-  const { bonsaiId } = router.query;
+  const router = useRouter()
+  const { bonsaiId } = router.query
 
-  const [notes, setNotes] = useState("");
-  const [title, setTitle] = useState("");
-  const [dateEntry, setDateEntry] = useState<Date>(new Date());
-  const [image, setImage] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [notes, setNotes] = useState('')
+  const [title, setTitle] = useState('')
+  const [dateEntry, setDateEntry] = useState<Date>(new Date())
+  const [image, setImage] = useState<File | null>(null)
+  const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+    e.preventDefault()
 
-    setLoading(true);
+    setLoading(true)
 
-    const form = new FormData();
+    const form = new FormData()
     if (image) {
-      form.append("image", image);
+      form.append('image', image)
     }
-    form.append("notes", notes);
-    form.append("title", title);
-    form.append("dateEntry", dateEntry.toISOString());
+    form.append('notes', notes)
+    form.append('title', title)
+    form.append('dateEntry', dateEntry.toISOString())
 
     await fetch(`/api/bonsais/${bonsaiId}/entries`, {
-      method: "POST",
+      method: 'POST',
       body: form,
     })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.error) {
-        toast.error(data.message);
-      } else {
-        router.push(`/bonsais/${bonsaiId}`);
-      }
-    });
-    setLoading(false);
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          toast.error(data.message)
+        } else {
+          router.push(`/bonsais/${bonsaiId}`)
+        }
+      })
+    setLoading(false)
   }
 
   return (
@@ -53,10 +60,7 @@ export default function NewEntry() {
       <Link href={`/bonsais/${bonsaiId}`}>
         <ArrowLeftIcon className="w-6 h-6" />
       </Link>
-      <form
-        onSubmit={handleSubmit}
-        className="flex justify-center"
-      >
+      <form onSubmit={handleSubmit} className="flex justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Cadastrar registro</CardTitle>
@@ -70,7 +74,7 @@ export default function NewEntry() {
               <Input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setImage(e.target.files?.[0] || null)}
+                onChange={e => setImage(e.target.files?.[0] || null)}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -79,7 +83,7 @@ export default function NewEntry() {
                 type="text"
                 required
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -87,12 +91,15 @@ export default function NewEntry() {
               <Textarea
                 rows={4}
                 value={notes}
-                onChange={(e) => setNotes(e.target.value)}
+                onChange={e => setNotes(e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-2">
               <Label>Data de registro</Label>
-              <DatePickerWithTime initialDate={dateEntry} onDateChange={setDateEntry} />
+              <DatePickerWithTime
+                initialDate={dateEntry}
+                onDateChange={setDateEntry}
+              />
             </div>
           </CardContent>
           <CardFooter>
@@ -117,5 +124,5 @@ export default function NewEntry() {
         </Card>
       </form>
     </div>
-  );
+  )
 }
