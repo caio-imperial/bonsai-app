@@ -24,7 +24,7 @@ Feito com Next.js, MongoDB e muito amor 💗
 
 ```bash
 # Clonar o repositório
-$ git clone https://github.com/seuusuario/bonsai-app
+$ git clone https://github.com/caio-imperial/bonsai-app
 
 # Entrar na pasta do projeto
 $ cd bonsai-app
